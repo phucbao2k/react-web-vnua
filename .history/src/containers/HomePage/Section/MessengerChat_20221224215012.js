@@ -5,7 +5,7 @@ import { MessengerChat } from "react-messenger-chat-plugin";
 ReactDOM.render(
     <MessengerChat
         pageId="100089083535959"
-        language="vi_VI"
+        language="vi_SE"
         themeColor={"#000000"}
         bottomSpacing={300}
         loggedInGreeting="loggedInGreeting"
