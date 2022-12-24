@@ -26,7 +26,7 @@ class About extends Component {
                         </div>
 
                     </div>
-                    <MessengerChat/>
+                    <MessengerChat
                 </div>
 
             </>

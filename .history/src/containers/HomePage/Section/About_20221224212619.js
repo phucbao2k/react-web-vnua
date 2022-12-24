@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import MessengerChat from './MessengerChat';
+import M
 class About extends Component {
 
     render() {
@@ -26,9 +26,8 @@ class About extends Component {
                         </div>
 
                     </div>
-                    <MessengerChat/>
+                    
                 </div>
-
             </>
             
         );

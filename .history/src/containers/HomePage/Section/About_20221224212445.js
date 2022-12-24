@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import MessengerChat from './MessengerChat';
+import ReactDOM from "react-dom";
+import { MessengerChat } from "react-messenger-chat-plugin";
 class About extends Component {
 
     render() {
@@ -26,9 +27,38 @@ class About extends Component {
                         </div>
 
                     </div>
-                    <MessengerChat/>
+                    ReactDOM.render(
+                    <MessengerChat
+                        pageId="109268111769502"
+                        language="sv_SE"
+                        themeColor={"#000000"}
+                        bottomSpacing={300}
+                        loggedInGreeting="loggedInGreeting"
+                        loggedOutGreeting="loggedOutGreeting"
+                        greetingDialogDisplay={"show"}
+                        debugMode={true}
+                        onMessengerShow={() => {
+                            console.log("onMessengerShow");
+                        }}
+                        onMessengerHide={() => {
+                            console.log("onMessengerHide");
+                        }}
+                        onMessengerDialogShow={() => {
+                            console.log("onMessengerDialogShow");
+                        }}
+                        onMessengerDialogHide={() => {
+                            console.log("onMessengerDialogHide");
+                        }}
+                        onMessengerMounted={() => {
+                            console.log("onMessengerMounted");
+                        }}
+                        onMessengerLoad={() => {
+                            console.log("onMessengerLoad");
+                        }}
+                    />,
+                    document.getElementById("demo")
+                    );
                 </div>
-
             </>
             
         );
