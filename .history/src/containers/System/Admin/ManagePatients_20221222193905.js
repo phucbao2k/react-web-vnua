@@ -275,7 +275,7 @@ class ManagePatients extends Component {
                         isOpenModal={isOpenRemedyModal}
                         dataModal={dataModal}
                         closeRemedyModal={this.closeRemedyModal}
-                    />
+                        sendRemedy={this.sendRemedy} />
                     {this.state.isOpen === true &&
                         <Lightbox
                             mainSrc={this.state.previewImgURL}

@@ -3,20 +3,19 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './RemedyModal.scss';
 import { Modal, Button, ModalBody, ModalFooter } from 'reactstrap';
-import { withRouter } from 'react-router';
+
 import { CommonUtils } from "../../../utils";
 
 //lodash hỗ trợ ta kiểm tra và thao tác với mảng dễ dàng hơn
 
-class RemedyAdminModal extends Component {
+class RemedyModal extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             imgBase64: '',
-            statusId: '',
-            doctorId: ''
+            statusId: ''
         }
 
     }
@@ -26,9 +25,7 @@ class RemedyAdminModal extends Component {
         if (this.props.dataModal) {
             this.setState({
                 email: this.props.dataModal.email,
-                statusId: this.props.dataModal.statusId,
-                doctorId: this.props.dataModal.doctorId,
-
+                statusId: this.props.dataModal.statusId
             })
         }
 
@@ -37,16 +34,8 @@ class RemedyAdminModal extends Component {
         if (prevProps.dataModal !== this.props.dataModal) {
             this.setState({
                 email: this.props.dataModal.email,
-                statusId: this.props.dataModal.statusId,
-                doctorId: this.props.dataModal.doctorId,
+                statusId: this.props.dataModal.statusId
             })
-        }
-
-    }
-    handleViewDetailDoctor = (doctorId) => {
-        if (this.props.history) {
-
-            this.props.history.push(`/detail-doctor/${doctorId}`);
         }
 
     }
@@ -71,15 +60,13 @@ class RemedyAdminModal extends Component {
         }
 
     }
-
-    handleOnChangeDoctorId = (event) => {
-        this.setState({
-            doctorId: event.target.value
-        })
+    handleSendRemedy = () => {
+        this.props.sendRemedy(this.state)
     }
 
+
     render() {
-        let { isOpenModal, closeRemedyModal, dataModal } = this.props
+        let { isOpenModal, closeRemedyModal, dataModal, sendRemedy } = this.props
         return (
             <Modal
                 isOpen={isOpenModal}
@@ -108,12 +95,12 @@ class RemedyAdminModal extends Component {
                                 disabled
                             />
                         </div>
-
+                       
 
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => this.handleViewDetailDoctor(this.state.doctorId)}><FormattedMessage id="patient.booking-modal.viewdoctor" /></Button>
+                
                     <Button color="secondary" onClick={closeRemedyModal}>Cancel</Button>
                 </ModalFooter>
 
@@ -135,7 +122,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RemedyAdminModal));
+export default connect(mapStateToProps, mapDispatchToProps)(RemedyModal);
 
 
 
