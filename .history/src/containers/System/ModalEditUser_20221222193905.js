@@ -59,55 +59,24 @@ class ModalEditUser extends Component {
             ...copyState
         });
     }
-    handleSubmit() {
-
-
-        //VALIDATE
-        var errors = [];
-        if (this.state.firstName === "") {
-            toast.error("Invalid first name input");
-            errors.push("firstName");
-        }
-        if (this.state.lastName === "") {
-            toast.error("Invalid last name input");
-            errors.push("lastName");
-        }
-
-
-        if (this.state.address === "") {
-            toast.error("Invalid address input");
-            errors.push("address");
-        }
-
-        //email
-        const expression = /\S+@\S+\.\S+/;
-        var validEmail = expression.test(String(this.state.email).toLowerCase());
-
-        if (!validEmail) {
-            toast.error("Invalid email");
-            errors.push("email");
-        }
-
-        this.setState({
-            errors: errors
-        });
-
-        for (let i = 0; i < errors.length; i++) {
-            if (i > 0) {
-                toast.error("Error! Please enter valid ")
+    checkValidateInput = () => {
+        let isValid = true;
+        let arrInput = ['email', 'password', 'firstName', 'lastName', 'address'];
+        for (let i = 0; i < arrInput.length; i++) {
+            if (!this.state[arrInput[i]]) {
+                isValid = false;
+                alert('Missing parameter: ' + arrInput[i]);
                 break;
             }
         }
-        return errors.length;
+        return isValid;
     }
     handleSaveUser = () => {
-        let errors = [];
-
-        errors.length = this.handleSubmit();
-        if (errors.length > 0) return;
-        this.props.editUser(this.state);
-
-
+        let isValid = this.checkValidateInput();
+        if (isValid === true) {
+            //gọi api để tạo modal
+            this.props.editUser(this.state);
+        }
     }
     render() {
         return (
