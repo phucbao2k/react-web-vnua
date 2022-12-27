@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils';
-import './ManageSpecialty.scss';
-import TableManageSpecialty from '../TableManageSpecialty';
+import './ManageClinic.scss';
+import TableManageClinic from '../TableManageClinic';
 import * as actions from '../../../store/actions';
 import Lightbox from 'react-image-lightbox';
 import MarkdownIt from 'markdown-it';
@@ -11,46 +11,50 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 const mdParser = new MarkdownIt();
-class ManageSpecialty extends Component {
+class ManageClinic extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             descriptionMarkdown: '',
             descriptionHTML: '',
-
-            specialtyArr: [],
-
+           
+            clinicArr: [],
+           
             isOpen: false,
             previewImgURL: '',
             name: '',
-            specialty: '',
+            address: '',
+            clinic: '',
             avatar: '',
             action: '',
-            specialtyEditId: '',
-
+            clinicEditId: '',
+          
         };
     }
 
     async componentDidMount() {
 
-
-        this.props.getSpecialtyStart();
-
+        
+        this.props.getClinicStart();
+        
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.specialtyRedux !== this.props.specialtyRedux) {
-            let arrSpecialties = this.props.specialtyRedux;
+        //hành động hiển thị dãy clinic(đc cập nhật liên tục sau khi đc tạo vs redux)
+        if (prevProps.clinicRedux !== this.props.clinicRedux) {
+            let arrClinics = this.props.clinicRedux;
             this.setState({
-                specialtyArr: arrSpecialties,
-                specialty: arrSpecialties && arrSpecialties.length > 0 ? arrSpecialties[0].keyMap : '',
+               clinicArr: arrClinics,
+                clinic: arrClinics && arrClinics.length > 0 ? arrClinics[0].keyMap : '',
             })
         }
-        if (prevProps.listSpecialties !== this.props.listSpecialties) {
-            let arrSpecialties = this.props.specialtyRedux;
+        //hành động create clinic vs redux 
+        if (prevProps.listClinics !== this.props.listClinics) {
+            let arrClinics = this.props.clinicRedux;
             this.setState({
                 name: '',
-                specialty: arrSpecialties && arrSpecialties.length > 0 ? arrSpecialties[0].keyMap : '',
+                address: '',
+                clinic: arrClinics && arrClinics.length > 0 ? arrClinics[0].keyMap : '',
                 avatar: '',
                 action: CRUD_ACTIONS.CREATE,
                 previewImgURL: '',
@@ -77,24 +81,24 @@ class ManageSpecialty extends Component {
             isOpen: true
         })
     }
-    handleSaveSpecialty = () => {
+    handleSaveClinic = () => {
         let isValid = this.checkValidateInput();
         if (isValid === false) return;
         let { action } = this.state;
         if (action === CRUD_ACTIONS.CREATE) {
-            this.props.createNewSpecialty({
+            this.props.createNewClinic({
                 name: this.state.name,
                 avatar: this.state.avatar,
                 descriptionHTML: this.state.descriptionHTML,
-                descriptionMarkdown: this.state.descriptionMarkdown
+                descriptionMarkdown: this.state.descriptionMarkdown,
+                address: this.state.address
             })
         }
         if (action === CRUD_ACTIONS.EDIT) {
-            let isValid = this.checkValidateInput();
-            if (isValid === false) return;
-            this.props.editSpecialtyRedux({
-                id: this.state.specialtyEditId,
+            this.props.editClinicRedux({
+                id: this.state.clinicEditId,
                 name: this.state.name,
+                address: this.state.address,
                 avatar: this.state.avatar,
                 descriptionHTML: this.state.descriptionHTML,
                 descriptionMarkdown: this.state.descriptionMarkdown
@@ -105,7 +109,7 @@ class ManageSpecialty extends Component {
     }
     checkValidateInput = () => {
         let isValid = true;
-        let arrCheck = ['name', 'descriptionHTML', 'descriptionMarkdown']
+        let arrCheck = ['name', 'address', 'descriptionHTML', 'descriptionMarkdown']
         for (let i = 0; i < arrCheck.length; i++) {
             if (!this.state[arrCheck[i]]) {
                 isValid = false;
@@ -122,23 +126,23 @@ class ManageSpecialty extends Component {
             ...copyState,
         })
     }
-
-    handleEditSpecialtyFromParent = (specialty) => {
+ 
+    handleEditClinicFromParent = (clinic) => {
         let imageBase64 = '';
-        if (specialty.image) {
-            imageBase64 = new Buffer(specialty.image, 'base64').toString('binary');
+        if (clinic.image) {
+            imageBase64 = new Buffer(clinic.image, 'base64').toString('binary');
             //Buffer cung cấp cách xử lý dữ liệu dạng nhị phân, 
             //câu lệnh trên xử lý dữ liệu BLOB (được mã hóa là base64) sang dữ liệu binary 
         }
         this.setState({
-            name: specialty.name,
-           
+            name: clinic.name,
+            address: clinic.address,
             avatar: '',
             previewImgURL: imageBase64,
             action: CRUD_ACTIONS.EDIT,
-            specialtyEditId: specialty.id,
-            descriptionHTML: specialty.descriptionHTML,
-            descriptionMarkdown: specialty.descriptionMarkdown
+            clinicEditId: clinic.id,
+            descriptionHTML: clinic.descriptionHTML,
+            descriptionMarkdown: clinic.descriptionMarkdown
         })
     }
     handleEditorChange = ({ html, text }) => {
@@ -148,16 +152,17 @@ class ManageSpecialty extends Component {
         })
     }
     render() {
-
-
+       console.log('check state', this.state)
+       
         let language = this.props.language;
-        let { name, avatar, descriptionHTML, descriptionMarkdown } = this.state;
+        let { name, address
+            , avatar, descriptionHTML, descriptionMarkdown } = this.state;
         //đây là cách viết của ES7
         return (
 
             <div className="user-redux-container" >
                 <div className="title">
-                    <FormattedMessage id="menu.admin.manage-specialty" />
+                    <FormattedMessage id="menu.admin.manage-clinic" />
                 </div>
                 <div className="user-redux-body">
                     <div className="container">
@@ -166,25 +171,32 @@ class ManageSpecialty extends Component {
                                 {''}
                             </div>
                             <div className="col-md-3 mb-3">
-                                <label htmlFor="validationServerUsername"> <FormattedMessage id="menu.admin.specialty-name" /></label>
+                                <label htmlFor="validationServerUsername"> <FormattedMessage id="menu.admin.clinic-name" /></label>
                                 <div className="input-group">
                                     <input type="text" className="form-control" id="validationServerUsername" placeholder="..." aria-describedby="inputGroupPrepend3" required
                                         value={name}
                                         onChange={(event) => { this.onChangeInput(event, 'name') }}
-                                        // disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false} 
-                                        />
+                                        // disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
+                                         />
 
                                 </div>
                             </div>
-
-
-
-
+                           
+                           
+                           
+                           
 
                         </div>
                         <div className="row">
-
                             <div className="col-md-6 mb-3">
+                                <label htmlFor="validationServer03"> <FormattedMessage id="create-user.address" /></label>
+                                <input type="text" className="form-control " id="validationServer03" placeholder="..." required
+                                    value={address}
+                                    onChange={(event) => { this.onChangeInput(event, 'address') }} />
+
+                            </div>
+                           
+                            <div className="col-md-3 mb-3">
                                 <label htmlFor="validationServer02"> <FormattedMessage id="create-user.image" /></label>
                                 <div className="preview-img-container">
                                     <input id="previewImg" type="file" hidden
@@ -201,7 +213,7 @@ class ManageSpecialty extends Component {
                             </div>
 
                         </div>
-
+                      
 
 
                         <div className="form-group">
@@ -222,7 +234,7 @@ class ManageSpecialty extends Component {
                         </div>
                         <div className="col-12 my-3">
                             <button className={this.state.action === CRUD_ACTIONS.EDIT ? "btn btn-warning" : "btn btn-primary"} type="submit"
-                                onClick={() => this.handleSaveSpecialty()}>
+                                onClick={() => this.handleSaveClinic()}>
                                 {this.state.action === CRUD_ACTIONS.EDIT ?
                                     <FormattedMessage id="manage-user.edit"></FormattedMessage>
                                     : <FormattedMessage id="manage-user.save"></FormattedMessage>}
@@ -230,8 +242,8 @@ class ManageSpecialty extends Component {
                             </button>
                         </div>
                         <div className="col-12 mb-5">
-                            <TableManageSpecialty
-                                handleEditSpecialtyFromParentKey={this.handleEditSpecialtyFromParent}
+                            <TableManageClinic
+                                handleEditClinicFromParentKey={this.handleEditClinicFromParent}
                                 action={this.state.action} />
                         </div>
 
@@ -251,17 +263,17 @@ class ManageSpecialty extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-        listSpecialties: state.admin.specialties
+        listClinics: state.admin.clinics
     };
 };
 //những cái biến state ở trên hàm mapStateToProps được khai báo trùng với các biến ở trên file này, không cần khai báo ở file
 //khác và có thể sử dụng ở file khác, vế trái là ta tự khai báo
 const mapDispatchToProps = dispatch => {
     return {
-        getSpecialtyStart: () => dispatch(actions.fetchAllSpecialtyStart()),
-        createNewSpecialty: (data) => dispatch(actions.createNewSpecialty(data)),
-        editSpecialtyRedux: (data) => dispatch(actions.editSpecialty(data))
+        getClinicStart: () => dispatch(actions.fetchAllClinicStart()),
+        createNewClinic: (data) => dispatch(actions.createNewClinic(data)),
+        editClinicRedux: (data) => dispatch(actions.editClinic(data))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSpecialty);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageClinic);

@@ -90,8 +90,6 @@ class ManageSpecialty extends Component {
             })
         }
         if (action === CRUD_ACTIONS.EDIT) {
-            let isValid = this.checkValidateInput();
-            if (isValid === false) return;
             this.props.editSpecialtyRedux({
                 id: this.state.specialtyEditId,
                 name: this.state.name,

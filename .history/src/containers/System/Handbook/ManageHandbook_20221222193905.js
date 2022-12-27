@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils';
-import './ManageSpecialty.scss';
-import TableManageSpecialty from '../TableManageSpecialty';
+import './ManageHandbook.scss';
+import TableManageHandbook from '../TableManageHandbook';
 import * as actions from '../../../store/actions';
 import Lightbox from 'react-image-lightbox';
 import MarkdownIt from 'markdown-it';
@@ -11,7 +11,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 const mdParser = new MarkdownIt();
-class ManageSpecialty extends Component {
+class ManageHandbook extends Component {
 
     constructor(props) {
         super(props);
@@ -19,15 +19,15 @@ class ManageSpecialty extends Component {
             descriptionMarkdown: '',
             descriptionHTML: '',
 
-            specialtyArr: [],
+            handbookArr: [],
 
             isOpen: false,
             previewImgURL: '',
             name: '',
-            specialty: '',
+            handbook: '',
             avatar: '',
             action: '',
-            specialtyEditId: '',
+            handbookEditId: '',
 
         };
     }
@@ -35,22 +35,22 @@ class ManageSpecialty extends Component {
     async componentDidMount() {
 
 
-        this.props.getSpecialtyStart();
+        this.props.getHandbookStart();
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.specialtyRedux !== this.props.specialtyRedux) {
-            let arrSpecialties = this.props.specialtyRedux;
+        if (prevProps.handbookRedux !== this.props.handbookRedux) {
+            let arrHandbooks = this.props.handbookRedux;
             this.setState({
-                specialtyArr: arrSpecialties,
-                specialty: arrSpecialties && arrSpecialties.length > 0 ? arrSpecialties[0].keyMap : '',
+                handbookArr: arrHandbooks,
+                handbook: arrHandbooks && arrHandbooks.length > 0 ? arrHandbooks[0].keyMap : '',
             })
         }
-        if (prevProps.listSpecialties !== this.props.listSpecialties) {
-            let arrSpecialties = this.props.specialtyRedux;
+        if (prevProps.listHandbooks !== this.props.listHandbooks) {
+            let arrHandbooks = this.props.handbookRedux;
             this.setState({
                 name: '',
-                specialty: arrSpecialties && arrSpecialties.length > 0 ? arrSpecialties[0].keyMap : '',
+                handbook: arrHandbooks && arrHandbooks.length > 0 ? arrHandbooks[0].keyMap : '',
                 avatar: '',
                 action: CRUD_ACTIONS.CREATE,
                 previewImgURL: '',
@@ -77,12 +77,12 @@ class ManageSpecialty extends Component {
             isOpen: true
         })
     }
-    handleSaveSpecialty = () => {
+    handleSaveHandbook = () => {
         let isValid = this.checkValidateInput();
         if (isValid === false) return;
         let { action } = this.state;
         if (action === CRUD_ACTIONS.CREATE) {
-            this.props.createNewSpecialty({
+            this.props.createNewHandbook({
                 name: this.state.name,
                 avatar: this.state.avatar,
                 descriptionHTML: this.state.descriptionHTML,
@@ -90,10 +90,8 @@ class ManageSpecialty extends Component {
             })
         }
         if (action === CRUD_ACTIONS.EDIT) {
-            let isValid = this.checkValidateInput();
-            if (isValid === false) return;
-            this.props.editSpecialtyRedux({
-                id: this.state.specialtyEditId,
+            this.props.editHandbookRedux({
+                id: this.state.handbookEditId,
                 name: this.state.name,
                 avatar: this.state.avatar,
                 descriptionHTML: this.state.descriptionHTML,
@@ -123,22 +121,22 @@ class ManageSpecialty extends Component {
         })
     }
 
-    handleEditSpecialtyFromParent = (specialty) => {
+    handleEditHandbookFromParent = (handbook) => {
         let imageBase64 = '';
-        if (specialty.image) {
-            imageBase64 = new Buffer(specialty.image, 'base64').toString('binary');
+        if (handbook.image) {
+            imageBase64 = new Buffer(handbook.image, 'base64').toString('binary');
             //Buffer cung cấp cách xử lý dữ liệu dạng nhị phân, 
             //câu lệnh trên xử lý dữ liệu BLOB (được mã hóa là base64) sang dữ liệu binary 
         }
         this.setState({
-            name: specialty.name,
-           
+            name: handbook.name,
+
             avatar: '',
             previewImgURL: imageBase64,
             action: CRUD_ACTIONS.EDIT,
-            specialtyEditId: specialty.id,
-            descriptionHTML: specialty.descriptionHTML,
-            descriptionMarkdown: specialty.descriptionMarkdown
+            handbookEditId: handbook.id,
+            descriptionHTML: handbook.descriptionHTML,
+            descriptionMarkdown: handbook.descriptionMarkdown
         })
     }
     handleEditorChange = ({ html, text }) => {
@@ -157,7 +155,7 @@ class ManageSpecialty extends Component {
 
             <div className="user-redux-container" >
                 <div className="title">
-                    <FormattedMessage id="menu.admin.manage-specialty" />
+                    <FormattedMessage id="menu.admin.manage-handbook" />
                 </div>
                 <div className="user-redux-body">
                     <div className="container">
@@ -166,7 +164,7 @@ class ManageSpecialty extends Component {
                                 {''}
                             </div>
                             <div className="col-md-3 mb-3">
-                                <label htmlFor="validationServerUsername"> <FormattedMessage id="menu.admin.specialty-name" /></label>
+                                <label htmlFor="validationServerUsername"><FormattedMessage id="menu.admin.common-diseases" /></label>
                                 <div className="input-group">
                                     <input type="text" className="form-control" id="validationServerUsername" placeholder="..." aria-describedby="inputGroupPrepend3" required
                                         value={name}
@@ -222,7 +220,7 @@ class ManageSpecialty extends Component {
                         </div>
                         <div className="col-12 my-3">
                             <button className={this.state.action === CRUD_ACTIONS.EDIT ? "btn btn-warning" : "btn btn-primary"} type="submit"
-                                onClick={() => this.handleSaveSpecialty()}>
+                                onClick={() => this.handleSaveHandbook()}>
                                 {this.state.action === CRUD_ACTIONS.EDIT ?
                                     <FormattedMessage id="manage-user.edit"></FormattedMessage>
                                     : <FormattedMessage id="manage-user.save"></FormattedMessage>}
@@ -230,8 +228,8 @@ class ManageSpecialty extends Component {
                             </button>
                         </div>
                         <div className="col-12 mb-5">
-                            <TableManageSpecialty
-                                handleEditSpecialtyFromParentKey={this.handleEditSpecialtyFromParent}
+                            <TableManageHandbook
+                                handleEditHandbookFromParentKey={this.handleEditHandbookFromParent}
                                 action={this.state.action} />
                         </div>
 
@@ -251,17 +249,17 @@ class ManageSpecialty extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-        listSpecialties: state.admin.specialties
+        listHandbooks: state.admin.handbooks
     };
 };
 //những cái biến state ở trên hàm mapStateToProps được khai báo trùng với các biến ở trên file này, không cần khai báo ở file
 //khác và có thể sử dụng ở file khác, vế trái là ta tự khai báo
 const mapDispatchToProps = dispatch => {
     return {
-        getSpecialtyStart: () => dispatch(actions.fetchAllSpecialtyStart()),
-        createNewSpecialty: (data) => dispatch(actions.createNewSpecialty(data)),
-        editSpecialtyRedux: (data) => dispatch(actions.editSpecialty(data))
+        getHandbookStart: () => dispatch(actions.fetchAllHandbookStart()),
+        createNewHandbook: (data) => dispatch(actions.createNewHandbook(data)),
+        editHandbookRedux: (data) => dispatch(actions.editHandbook(data))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSpecialty);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageHandbook);
