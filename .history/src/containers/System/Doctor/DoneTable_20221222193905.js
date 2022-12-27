@@ -48,7 +48,7 @@ class DoneTable extends Component {
 
     getDataPatient = async () => {
         let { user } = this.props;
-        let status = 'S6'
+        let status = 'S5'
         let { currentDate } = this.state;
         let formatedDate = new Date(currentDate).getTime();
         let res = await getAllDoneBookingForDoctor({
@@ -131,7 +131,7 @@ class DoneTable extends Component {
         })
 
     }
-
+    
     // cancelBooking = async (dataChild) => {
     //     let { dataModal } = this.state;
     //     this.setState({
@@ -252,7 +252,7 @@ class DoneTable extends Component {
                                                         <td>
 
                                                             <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
-
+                                                           
                                                         </td>
                                                     </tr>
                                                 )
