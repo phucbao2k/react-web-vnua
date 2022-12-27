@@ -10,8 +10,8 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import Select from 'react-select';
 import { getDetailInforDoctor } from '../../services/userService';
-import { toast } from 'react-toastify';
 const mdParser = new MarkdownIt();
+
 // nếu muốn import 1 function thì ta dùng dấu ngoặc nhọn
 class ManageDoctor extends Component {
     // PROPS stands for properties and is being used for passing data from one component to another.
@@ -37,7 +37,7 @@ class ManageDoctor extends Component {
             selectedPrice: '',
             selectedPayment: '',
             selectProvince: '',
-            selectedClinic: '',
+            selectedClinic: '', 
             selectedSpecialty: '',
             nameClinic: '',
             addressClinic: '',
@@ -86,7 +86,7 @@ class ManageDoctor extends Component {
                 inputData.map((item, index) => {
                     let object = {};
                     let labelEn = `${item.valueEn}`;
-                    let labelVi = ` ${item.valueVi}`;
+                    let labelVi = ` ${item.valueVi }`;
                     object.label = language === LANGUAGES.VI ? labelVi : labelEn;
                     object.value = item.keyMap;
                     result.push(object);
@@ -163,79 +163,8 @@ class ManageDoctor extends Component {
             contentHTML: html,
         })
     }
-    handleSubmit() {
 
-
-        //VALIDATE
-        var errors = [];
-        if (this.state.contentHTML === "") {
-            toast.error("Invalid info content input");
-            errors.push("contentHTML");
-        }
-        if (this.state.contentMarkdown === "") {
-            toast.error("Invalid info mardown input");
-            errors.push("contentMarkdown");
-        }
-        if (this.state.description === "") {
-            toast.error("Invalid description input");
-            errors.push("description");
-        }
-        if (this.state.phoneNumber === "" && this.state.phoneNumber.length > 11) {
-            toast.error("Invalid phone number input");
-            errors.push("phoneNumber");
-        }
-        if (this.state.addressClinic === "") {
-            toast.error("Invalid address clinic input");
-            errors.push("addressClinic");
-        }
-        if (this.state.nameClinic === "") {
-            toast.error("Invalid name clinic input");
-            errors.push("nameClinic");
-        }
-        if (this.state.selectedDoctor === "") {
-            toast.error("Invalid doctor input");
-            errors.push("selectedDoctor");
-        }
-        if (this.state.selectedPayment === "") {
-            toast.error("Invalid payment input");
-            errors.push("selectedPayment");
-        }
-        if (this.state.selectedPrice === "") {
-            toast.error("Invalid price input");
-            errors.push("selectedPrice");
-        }
-        if (this.state.selectedSpecialty === "") {
-            toast.error("Invalid specialty input");
-            errors.push("selectedSpecialty");
-        }
-        if (this.state.selectProvince === "") {
-            toast.error("Invalid province input");
-            errors.push("selectProvince");
-        }
-        if (this.state.selectedClinic === "") {
-            toast.error("Invalid clinic input");
-            errors.push("selectedClinic");
-        }
-        //email
-
-
-        this.setState({
-            errors: errors
-        });
-
-        for (let i = 0; i < errors.length; i++) {
-            if (i > 0) {
-                toast.error("Error! Please enter valid ")
-                break;
-            }
-        }
-        return errors.length;
-    }
     handleSaveContentMarkdown = () => {
-        let errors = [];
-
-        errors.length = this.handleSubmit();
-        if (errors.length > 0) return;
         let { hasOldData } = this.state;
         this.props.saveDetailDoctor({
             contentHTML: this.state.contentHTML,
@@ -249,9 +178,9 @@ class ManageDoctor extends Component {
             nameClinic: this.state.nameClinic,
             addressClinic: this.state.addressClinic,
             note: this.state.note,
-            clinicId: this.state.selectedClinic.value,
+            clinicId:  this.state.selectedClinic.value,
             specialtyId: this.state.selectedSpecialty.value,
-            phoneNumber: this.state.phoneNumber
+phoneNumber: this.state.phoneNumber
             //doctorId: this.state.selectedDoctor.value dùng để gán giá trị item.id cho doctorId rồi lưu vào db
         })
     }
@@ -259,15 +188,15 @@ class ManageDoctor extends Component {
         this.setState({ selectedDoctor }, () =>
             console.log(`Doctor selected:`, this.state.selectedDoctor)
         );
-        let { listPayment, listPrice, listProvince, listSpecialty, listClinic } = this.state;
+        let {listPayment,listPrice,listProvince, listSpecialty, listClinic} = this.state;
         let res = await getDetailInforDoctor(selectedDoctor.value);
         if (res && res.errCode === 0 && res.data && res.data.Markdown) {
             let markdown = res.data.Markdown;
-            let addressClinic = '', nameClinic = '', note = '', paymentId = '',
-                priceId = '', provinceId = '', selectedPayment = '', selectedPrice = '',
-                selectProvince = '', selectedSpecialty = '', specialtyId = '',
-                clinicId = '', selectedClinic = '', phoneNumber = '';
-            if (res.data.Doctor_Infor) {
+            let addressClinic = '', nameClinic = '', note='',paymentId = '',
+            priceId = '', provinceId = '',selectedPayment='', selectedPrice = '',
+             selectProvince='', selectedSpecialty='', specialtyId='',
+             clinicId='', selectedClinic = '', phoneNumber = '';
+            if(res.data.Doctor_Infor){
                 addressClinic = res.data.Doctor_Infor.addressClinic;
                 nameClinic = res.data.Doctor_Infor.nameClinic;
                 note = res.data.Doctor_Infor.note;
@@ -278,7 +207,7 @@ class ManageDoctor extends Component {
                 specialtyId = res.data.Doctor_Infor.specialtyId;
                 clinicId = res.data.Doctor_Infor.clinicId;
                 selectedPayment = listPayment.find(item => {
-                    return item && item.value === paymentId
+                    return item && item.value ===paymentId
                 })
                 selectedPrice = listPrice.find(item => {
                     return item && item.value === priceId
@@ -323,7 +252,7 @@ class ManageDoctor extends Component {
                 selectProvince: '',
                 selectedSpecialty: '',
                 selectedClinic: '',
-                phoneNumber: '',
+                phoneNumber:'',
             })
         }
 
@@ -380,7 +309,7 @@ class ManageDoctor extends Component {
                         <div className=" more-infor-extra row">
                             <div className="col-4 form-group">
                                 <label>Phone Number</label>
-                                <input type="number" maxLength="11" className="form-control"
+                                <input className="form-control"
                                     onChange={(event) => this.handleOnChangeText(event, 'phoneNumber')}
                                     value={this.state.phoneNumber}
                                 />
@@ -418,7 +347,7 @@ class ManageDoctor extends Component {
                             <div className="col-4 form-group">
                                 <label><FormattedMessage id="admin.manage-doctor.nameClinic" /></label>
                                 <input className="form-control"
-                                    onChange={(event) => this.handleOnChangeText(event, 'nameClinic')}
+                                    onChange={(event)=> this.handleOnChangeText(event, 'nameClinic')}
                                     value={this.state.nameClinic}
                                 />
                             </div>
@@ -438,9 +367,12 @@ class ManageDoctor extends Component {
                                     placeholder={<FormattedMessage id="admin.manage-doctor.select-clinic" />}
                                     name="selectedClinic"
                                 />
-
+                               
                             </div>
 
+                            
+                        </div>
+                        <div className="row">
                             <div className="col-4 form-group">
                                 <label><FormattedMessage id="admin.manage-doctor.specialty" /></label>
                                 <Select
@@ -451,8 +383,8 @@ class ManageDoctor extends Component {
                                     name="selectedSpecialty"
                                 />
                             </div>
-
-                            <div className="col-4 form-group">
+                           
+                            <div className="col-8 form-group">
                                 <label><FormattedMessage id="admin.manage-doctor.note" /></label>
                                 <input className="form-control"
                                     onChange={(event) => this.handleOnChangeText(event, 'note')}
@@ -460,10 +392,7 @@ class ManageDoctor extends Component {
                                 />
                             </div>
                         </div>
-
-
                     </div>
-
                     <div className="container-fluid manage-doctor-editor">
                         <MdEditor style={{ height: '300px' }} renderHTML={text => mdParser.render(text)}
                             onChange={this.handleEditorChange}
