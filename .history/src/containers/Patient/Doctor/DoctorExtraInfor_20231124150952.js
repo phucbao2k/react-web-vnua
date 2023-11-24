@@ -138,6 +138,7 @@ class DoctorExtraInfor extends Component {
                              <FormattedMessage id="patient.extra-infor-doctor.pay" /></a>
                         </div>
                         <div className="hide-price">
+                          
                             <a href='https://thanhtoan-vnpay.onrender.com/order/create_payment_url'>
                                 <FormattedMessage id="patient.extra-infor-doctor.pay" /></a>
                         </div>
