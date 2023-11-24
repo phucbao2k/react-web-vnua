@@ -134,8 +134,6 @@ class DoctorExtraInfor extends Component {
                             <span onClick={() => this.showHideDetailInfor(false)}>
                                 <FormattedMessage id="patient.extra-infor-doctor.hide-price" />
                             </span>
-                            <a href='https://thanhtoan-vnpay.onrender.com/order/create_payment_url'> 
-                             <FormattedMessage id="patient.extra-infor-doctor.pay" /></a>
                         </div>
 
                         </>

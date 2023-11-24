@@ -50,8 +50,7 @@
             "price": "Gía khám: ",
             "detail": "Xem chi tiết",
             "payment": "Khách hàng có thể thanh toán chi phí bằng các hình thức: ",
-            "hide-price": "Ẩn bảng giá",
-            "pay": "Thanh toán online!"
+            "hide-price": "Ẩn bảng giá"
         },
         "booking-modal": {
             "title": "Thông tin đặt lịch khám bệnh",
