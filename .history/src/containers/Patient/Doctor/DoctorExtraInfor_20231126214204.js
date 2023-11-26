@@ -136,7 +136,7 @@ class DoctorExtraInfor extends Component {
                             </span>
                         </div>
                         <div className="pay-now">
-                            <a href='http://localhost:7070/customer-online-pay'>
+                            <a href='http://localhost:7070'>
                                 <FormattedMessage id="patient.extra-infor-doctor.pay" /></a>
                         </div>
                         </>
