@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Header from '../containers/Header/Header';
 import ManagePatients from '../containers/System/Admin/ManagePatients';
 import ManageSchedule from '../containers/Patient/Doctor/ManageSchedule';
+import SearchableTable from '../containers/System/Admin/SearchableTable';
 class Admin extends Component {
     // PROPS stands for properties and is being used for passing data from one component to another.
     // But the important part here is that data with props are being passed in a uni-directional flow. ( one way from parent to child)
@@ -24,6 +25,7 @@ class Admin extends Component {
                         <Switch>
                             <Route path="/admin/manage-schedule" component={ManageSchedule} />
                             <Route path="/admin/manage-patients" component={ManagePatients} />
+                            <Route path="/admin/search" component={SearchableTable}/>
                         </Switch>
                     </div>
                 </div>

@@ -12,6 +12,7 @@ import Manage_Patient from '../containers/System/Patient/Manage_Patient';
 import ManagePatients from '../containers/System/Admin/ManagePatients';
 import ManageHandbook from '../containers/System/Handbook/ManageHandbook';
 import ManageSchedule from '../containers/Patient/Doctor/ManageSchedule';
+import SearchableTable from '../containers/System/Admin/SearchableTable';
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -26,6 +27,7 @@ class System extends Component {
                             <Route path="/system/doctor/manage-schedule" component={ManageSchedule} />
                             <Route path="/system/patient/manage_patient" component={Manage_Patient} />
                             <Route path="/system/admin/manage-patients" component={ManagePatients} />
+                            <Route path="/system/admin/search" component={SearchableTable} />
                             <Route path="/system/user-redux" component={UserRedux} />
                             <Route path="/system/manage-doctor" component={ManageDoctor} />
                             <Route path="/system/manage-specialty" component={ManageSpecialty} />
