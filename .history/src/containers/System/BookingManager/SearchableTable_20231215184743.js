@@ -249,9 +249,9 @@ class SearchableTable extends Component {
                                                             >
                                                                 <FormattedMessage id="patient.booking-modal.confirm" />
                                                             </button>
-                                                            {/* <button onClick={() => this.handleEditUserFromParent(item)}>
+                                                            <button onClick={() => this.handleEditUserFromParent(item)}>
                                                                 <FormattedMessage id="patient.booking-modal.check" />
-                                                            </button> */}
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 );

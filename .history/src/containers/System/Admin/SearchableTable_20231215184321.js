@@ -43,7 +43,7 @@ class SearchableTable extends Component {
             address: item.patientData.address,
             price: item.priceTypeDataBooking.valueVi,
             doctorName: `${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`,
-            statusId: item.statusId
+            
         }
         this.setState({
             isOpenRemedyModal: true,
@@ -223,8 +223,8 @@ class SearchableTable extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
+                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
-                                                        <td>{item.statusId}</td>
                                                         {/* <td>
                                                             <div className="preview-img-container">
                                                                 <input
@@ -249,9 +249,9 @@ class SearchableTable extends Component {
                                                             >
                                                                 <FormattedMessage id="patient.booking-modal.confirm" />
                                                             </button>
-                                                            {/* <button onClick={() => this.handleEditUserFromParent(item)}>
+                                                            <button onClick={() => this.handleEditUserFromParent(item)}>
                                                                 <FormattedMessage id="patient.booking-modal.check" />
-                                                            </button> */}
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 );

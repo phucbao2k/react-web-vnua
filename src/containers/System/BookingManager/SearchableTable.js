@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { getSearchBookingForAdminBooking, postSendSchedule } from '../../../services/userService';
 import { LANGUAGES, CommonUtils } from '../../../utils';
-import RemedyModal from './RemedyModal';
+import RemedyModal from '../BookingManager/RemedyModal';
 import { toast } from 'react-toastify';
 import LoadingOverLay from "react-loading-overlay";
 import 'react-image-lightbox/style.css';
 import Lightbox from 'react-image-lightbox';
-import TableManagePaidBooking from './TableManagePaidBooking';
+import TableManagePaidBooking from '../BookingManager/TableManagePaidBooking';
 import './SearchableTable.scss';
 
 class SearchableTable extends Component {
@@ -42,7 +42,8 @@ class SearchableTable extends Component {
             phoneNumber: item.phoneNumber,
             address: item.patientData.address,
             price: item.priceTypeDataBooking.valueVi,
-            doctorName: `${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`
+            doctorName: `${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`,
+            statusId: item.statusId
         }
         this.setState({
             isOpenRemedyModal: true,
@@ -202,7 +203,7 @@ class SearchableTable extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.address" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
-                                           
+                                            <th><FormattedMessage id="patient.booking-modal.status" /></th>
                                             <th>Actions</th>
                                         </tr>
                                         {searchResults && searchResults.length > 0 ? (
@@ -222,8 +223,8 @@ class SearchableTable extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
+                                                        <td>{item.statusId}</td>
                                                         {/* <td>
                                                             <div className="preview-img-container">
                                                                 <input
@@ -248,9 +249,9 @@ class SearchableTable extends Component {
                                                             >
                                                                 <FormattedMessage id="patient.booking-modal.confirm" />
                                                             </button>
-                                                            <button onClick={() => this.handleEditUserFromParent(item)}>
+                                                            {/* <button onClick={() => this.handleEditUserFromParent(item)}>
                                                                 <FormattedMessage id="patient.booking-modal.check" />
-                                                            </button>
+                                                            </button> */}
                                                         </td>
                                                     </tr>
                                                 );
