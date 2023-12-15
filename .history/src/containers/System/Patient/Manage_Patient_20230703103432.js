@@ -155,7 +155,7 @@ class Manage_Patient extends Component {
                 isShowLoading: false
             })
             toast.success('Send Cancel succeeds');
-            this.closeCancelPatientModal();
+            this.closeCancelModal();
             await this.getDataPatient();
         } else {
             this.setState({
