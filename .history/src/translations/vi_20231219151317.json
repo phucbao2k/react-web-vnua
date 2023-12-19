@@ -49,8 +49,8 @@
             "text-address": "Địa chỉ khám",
             "price": "Gía khám: ",
             "detail": "Xem chi tiết",
-            "payment": "Khách hàng có thể thanh toán chi phí bằng tất cả hình thức. ",
-            "note": "Lưu ý: Giá ở trên chỉ là giá khám, chưa bao gồm chi phí cho các xét nghiệm khác",
+            "payment": "Khách hàng có thể thanh toán chi phí bằng các hình thức: ",
+            "note": "Lưu ý: Giá ở trên chỉ là giá khám, chưa bao gồm các chi phí khác ",
             "hide-price": "Ẩn bảng giá",
             "pay": "Thanh toán online!"
         },

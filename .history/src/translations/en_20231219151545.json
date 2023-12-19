@@ -49,7 +49,7 @@
             "text-address": "Address of examination",
             "price": "Examination price: ",
             "detail": "See details",
-            "payment": "Customers can pay fees in all forms. ",
+            "payment": "The customer can pay the cost in the form of: ",
             "note": "Note: The above price is only the examination price, does not include the cost of other tests",
             "hide-price": "Hide price list",
             "pay": "Make online payment now !"
