@@ -44,7 +44,7 @@
             "no-schedule": "The doctor does not have an appointment during this time, please choose another date",
             "choose": "Choose ",
             "book-free": " and book (free)! ",
-            "more": "More Information"
+            "more": "More Info"
         },
         "extra-infor-doctor": {
             "text-address": "Address of examination",

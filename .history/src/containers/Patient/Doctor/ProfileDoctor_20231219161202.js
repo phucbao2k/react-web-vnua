@@ -119,8 +119,8 @@ renderTimeBooking = (dataTime) => {
                     </div>
                 </div>
                 {isShowLinkDetail === true && 
-                    <div className="view-detail-doctor" >
-                        <Link to={`/detail-doctor/${doctorId}`}><FormattedMessage id="patient.detail-doctor.more" /></Link>
+                <div className="view-detail-doctor">
+                        <Link to={`/detail-doctor/${doctorId}`}><FormattedMessage id="patient.detail-doctor.priceBooking" /></Link>
                     </div>}
                 {isShowPrice === true &&
                     <div className="price">
