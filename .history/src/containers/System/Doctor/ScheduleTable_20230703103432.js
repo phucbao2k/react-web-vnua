@@ -4,56 +4,57 @@ import { connect } from 'react-redux';
 import './ManagePatient.scss';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
-import { getAllBookingForPatient, postCancelPatientRemedy } from '../../../services/userService';
+import { getAllPaidBookingForDoctor, postSendDone,postReBooking } from '../../../services/userService';
 import { LANGUAGES, CommonUtils } from '../../../utils';
-import RemedyPatientModal from '../Doctor/RemedyPatientModal';
 import { toast } from 'react-toastify';
-
 import LoadingOverLay from "react-loading-overlay";
-
+import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
-import CancelPatientModal from './CancelPatientModal';
-import TableManageBooking from './TableManageBooking';
+import ChangeStatusModal from './ChangeStatusModal';
+import ReBookingModal from './ReBookingModal';
 //lodash hỗ trợ ta kiểm tra và thao tác với mảng dễ dàng hơn
 
 
-class Manage_Patient extends Component {
+class ScheduleTable extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             currentDate: moment(new Date()).startOf('day').valueOf(),
             dataPatient: [],
-            isOpenRemedyModal: false,
+            isOpenModal: false,
+            isOpenReBookingModal: false,
             dataModal: {},
             isShowLoading: false,
             isOpen: false,
             previewImgURL: '',
             avatar: '',
-            bookingArr: [],
-            booking: '',
-            action: '',
-            isOpenCancelModal: false,
-          
-            // bookingsPatientRedux: [],
+
         }
 
     }
 
 
     async componentDidMount() {
-        // this.props.fetchBookingPatientRedux();
+
         this.getDataPatient()
 
     }
+
+
+    // if(data) {
+    //     let img = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} />
+    // }
+
     getDataPatient = async () => {
         let { user } = this.props;
+        let status = 'S5'
         let { currentDate } = this.state;
         let formatedDate = new Date(currentDate).getTime();
-        let res = await getAllBookingForPatient({
-            patientId: user.id,
-            date: formatedDate
+        let res = await getAllPaidBookingForDoctor({
+            statusId: status,
+            date: formatedDate,
+            doctorId: user.id
         })
         if (res && res.errCode === 0) {
             this.setState({
@@ -62,38 +63,12 @@ class Manage_Patient extends Component {
         }
     }
     async componentDidUpdate(prevProps, prevState, snapshot) {
-        // if (prevProps.listPatientBookings !== this.props.listPatientBookings) {
-        //     this.setState({
-        //         bookingsPatientRedux: this.props.listPatientBookings,
-        //     })
-        // }
         if (this.props.language !== prevProps.language) {
 
         }
     }
-    // handleDeletePatientBooking = (booking) => {
-    //     this.props.deleteBookingPatientRedux(booking.id);
-    //     console.log('booking id: ' + booking.id);
-    // }
-    handleBtnCancel = (item) => {
-        let data = {
-            doctorId: item.doctorId,
-            patientId: item.patientId,
-            email: item.patientData.email,
-            timeType: item.timeType,
-            patientName: item.patientData.firstName,
-            // plantName: item.plantName,
-            reasons: item.reasons,
-            avatar: item.image,
-            
-        }
-        this.setState({
-            isOpenCancelModal: true,
-            dataModal: data,
-            avatar: ''
-        })
 
-    }
+
     handleOnChangeDatePicker = (date) => {
         this.setState({
             currentDate: date[0]
@@ -103,6 +78,7 @@ class Manage_Patient extends Component {
                 await this.getDataPatient()
             })
     }
+    //nút bấm xác nhận mở ra modal gửi thông tin khám bệnh
     handleBtnConfirm = (item) => {
         let data = {
             doctorId: item.doctorId,
@@ -110,14 +86,32 @@ class Manage_Patient extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
-            statusId: item.statusId,
-            doctorName: `${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`
+            phoneNumber: item.phoneNumber
         }
         this.setState({
-            isOpenRemedyModal: true,
+            isOpenModal: true,
+            dataModal: data,
+            avatar: ''
+        })
+
+    }
+    handleBtnReBooking = (item) => {
+        let data = {
+            doctorId: item.doctorId,
+            patientId: item.patientId,
+            email: item.patientData.email,
+            timeType: item.timeType,
+            patientName: item.patientData.firstName,
+            plantName: item.plantName,
+            reasons: item.reasons,
+            avatar: item.image,
+            phoneNumber: item.phoneNumber
+        }
+        this.setState({
+            isOpenReBookingModal: true,
             dataModal: data,
             avatar: ''
         })
@@ -125,25 +119,26 @@ class Manage_Patient extends Component {
     }
     closeRemedyModal = () => {
         this.setState({
-            isOpenRemedyModal: false,
+            isOpenModal: false,
             dataModal: {}
         })
 
     }
-    closeCancelPatientModal = () => {
+    closeReBookingModal = () => {
         this.setState({
-            isOpenCancelModal: false,
+            isOpenReBookingModal: false,
             dataModal: {}
         })
 
     }
-    cancelRemedy = async (dataChild) => {
+    sendDone = async (dataChild) => {
         let { dataModal } = this.state;
         this.setState({
             isShowLoading: true
         })
-        let res = await postCancelPatientRemedy({
+        let res = await postSendDone({
             email: dataChild.email,
+            imgBase64: dataChild.imgBase64,
             doctorId: dataModal.doctorId,
             patientId: dataModal.patientId,
             timeType: dataModal.timeType,
@@ -154,39 +149,67 @@ class Manage_Patient extends Component {
             this.setState({
                 isShowLoading: false
             })
-            toast.success('Send Cancel succeeds');
-            this.closeCancelPatientModal();
+            toast.success('Done!');
+            this.closeRemedyModal();
             await this.getDataPatient();
         } else {
             this.setState({
                 isShowLoading: false
             })
             toast.error('Something went wrong...');
-            console.log('error remedy is:', res)
+            console.log('error remdey is:', res)
         }
     }
-    // sendRemedy = async (dataChild) => {
-    //     let {dataModal} = this.state;
+    sendReBooking = async (dataChild) => {
+        let { dataModal } = this.state;
+        this.setState({
+            isShowLoading: true
+        })
+        let res = await postReBooking({
+            email: dataChild.email,
+            imgBase64: dataChild.imgBase64,
+            doctorId: dataModal.doctorId,
+            patientId: dataModal.patientId,
+            timeType: dataModal.timeType,
+            language: this.props.language,
+            patientName: dataModal.patientName,
+        })
+        if (res && res.errCode === 0) {
+            this.setState({
+                isShowLoading: false
+            })
+            toast.success('Done!');
+            this.closeReBookingModal();
+            await this.getDataPatient();
+        } else {
+            this.setState({
+                isShowLoading: false
+            })
+            toast.error('Something went wrong...');
+            console.log('error remdey is:', res)
+        }
+    }
+    // cancelBooking = async (dataChild) => {
+    //     let { dataModal } = this.state;
     //     this.setState({
     //         isShowLoading: true
     //     })
-    //     let res = await postSendRemedy({
+    //     let res = await postCancelBooking({
     //         email: dataChild.email,
-    //         imgBase64: dataChild.imgBase64,
     //         doctorId: dataModal.doctorId,
     //         patientId: dataModal.patientId,
     //         timeType: dataModal.timeType,
     //         language: this.props.language,
     //         patientName: dataModal.patientName,
     //     })
-    //     if(res && res.errCode === 0) {
+    //     if (res && res.errCode === 0) {
     //         this.setState({
     //             isShowLoading: false
     //         })
-    //         toast.success('Send Remedy succeeds');
-    //         this.closeRemedyModal();
+    //         toast.success('Send Cancel succeeds');
+    //         this.closeBookingModal();
     //         await this.getDataPatient();
-    //     }else{
+    //     } else {
     //         this.setState({
     //             isShowLoading: false
     //         })
@@ -228,15 +251,15 @@ class Manage_Patient extends Component {
     }
     render() {
         let { language } = this.props;
-        let { dataPatient, isOpenRemedyModal, dataModal, avatar, isOpenCancelModal } = this.state;
-       
+        let { dataPatient, dataModal, isOpenModal, isOpenReBookingModal } = this.state;
+        console.log('dataPatient:', dataPatient);
         return (
             <>
                 <LoadingOverLay active={this.state.isShowLoading}
                     spinner
                     text='Loading...'>
                     <div className="manage-patient-container">
-                        <div className="m-p-title"><FormattedMessage id="patient.booking-modal.manage-booking" /></div>
+                        <div className="m-p-title">Thời khóa biểu</div>
                         <div className="manage-patient-body row">
                             <div className="col-4 form-group">
                                 <label><FormattedMessage id="patient.booking-modal.time" /></label>
@@ -251,18 +274,14 @@ class Manage_Patient extends Component {
                                     <tbody>
                                         <tr>
                                             <th><FormattedMessage id="patient.booking-modal.numerical-order" /></th>
-                                            <th><FormattedMessage id="patient.booking-modal.doctorName" /></th>
-                                            <th><FormattedMessage id="patient.booking-modal.email" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.time" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                            {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                            <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th>Actions</th>
-
-
                                         </tr>
                                         {dataPatient && dataPatient.length > 0 ?
                                             dataPatient.map((item, index) => {
@@ -271,13 +290,11 @@ class Manage_Patient extends Component {
                                                 return (
                                                     <tr key={index}>
                                                         <td>{index + 1}</td>
-                                                        <td>{`${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`}</td>
-                                                        <td>{item.patientData.email}</td>
                                                         <td>{time}</td>
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
+                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
@@ -290,14 +307,13 @@ class Manage_Patient extends Component {
                                                         </div>
                                                         </td>
                                                         <td>
-                                                            <button className="mp-btn-confirm"
-                                                                onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.btnConfirm" /></button>
-                                                            <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.view-image" /></button>
-                                                            <button className="mp-btn-confirm"
-                                                                onClick={() => this.handleBtnCancel(item)}>Hủy lịch</button>
-                                                            {/* <button className="btn-delete" onClick={() => this.handleDeletePatientBooking(item)}><i className="fa-solid fa-trash"></i></button> */}
-                                                        </td>
 
+                                                            <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
+                                                            <button className="mp-btn-confirm" onClick={() => this.handleBtnConfirm(item)}>Hoàn thành</button>
+                                                            <button className="mp-btn-confirm"
+                                                                onClick={() => this.handleBtnReBooking(item)}>Đặt lại lịch hẹn
+                                                                </button>
+                                                        </td>
                                                     </tr>
                                                 )
                                             })
@@ -311,33 +327,28 @@ class Manage_Patient extends Component {
 
 
                                 </table>
-
                             </div>
 
                         </div>
-                        <div className="contact">Muốn trở thành đối tác của chúng tôi? Hãy liên hệ 0981xxxxxx ngay! </div>
-                       
                     </div>
-                    <RemedyPatientModal
-                        isOpenModal={isOpenRemedyModal}
+                    <ChangeStatusModal
+                        isOpenModal={isOpenModal}
                         dataModal={dataModal}
                         closeRemedyModal={this.closeRemedyModal}
-                    />
-                    <CancelPatientModal
-                        isOpenCancel={isOpenCancelModal}
+                        sendDone={this.sendDone} />
+                    <ReBookingModal
+                        isOpenReBookingModal={isOpenReBookingModal}
                         dataModal={dataModal}
-                        closeCancelPatientModal={this.closeCancelPatientModal}
-                        cancelRemedy={this.cancelRemedy} />
+                        closeReBookingModal={this.closeReBookingModal}
+                        sendReBooking={this.sendReBooking} />
+                  
                     {this.state.isOpen === true &&
                         <Lightbox
                             mainSrc={this.state.previewImgURL}
                             onCloseRequest={() => this.setState({ isOpen: false })} />}
+
                 </LoadingOverLay>
-                <div className="col-12 mb-5">
-                    <TableManageBooking
-                        handleEditUserFromParentKey={this.handleEditUserFromParent}
-                        action={this.state.action} />
-                </div>
+
 
             </>
 
@@ -350,18 +361,15 @@ const mapStateToProps = state => {
     return {
         language: state.app.language,
         user: state.user.userInfo,
-        // listPatientBookings: state.admin.patientBookings
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        // fetchBookingPatientRedux: () => dispatch(actions.fetchAllBookingPatientStart()),
-        // deleteBookingPatientRedux: (id) => dispatch(actions.deleteBookingPatientService(id)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Manage_Patient);
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleTable);
 
 
 

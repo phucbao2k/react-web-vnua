@@ -257,7 +257,7 @@ class Manage_Patient extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                            {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                            <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th>Actions</th>
@@ -277,7 +277,7 @@ class Manage_Patient extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
+                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden

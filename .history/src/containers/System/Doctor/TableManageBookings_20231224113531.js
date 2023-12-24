@@ -62,7 +62,7 @@ class TableManageBookings extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             statusId: item.statusId,

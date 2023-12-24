@@ -1,38 +1,36 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import './TableManageBookings.scss';
-
-import { getHistoryBookingForDoctor } from '../../../services/userService';
+import './TableManageBooking.scss';
+import { getHistoryBookingForPatient } from '../../../services/userService';
 import moment from 'moment';
-
 import RemedyPatientModal from '../Doctor/RemedyPatientModal';
 // nếu muốn import 1 function thì ta dùng dấu ngoặc nhọn
-class TableManageBookings extends Component {
+class TableManageBooking extends Component {
     // PROPS stands for properties and is being used for passing data from one component to another.
     // But the important part here is that data with props are being passed in a uni-directional flow. ( one way from parent to child)
     constructor(props) {
         super(props);
         this.state = {
-           
+
             dataPatient: [],
             isOpenRemedyModal: false,
-            dataModal: {}
-
+            dataModal: {},
+          doctorId: ''
         }
     }
     //để lưu giá trị của 1 biến components, ta dùng state
     //Component là một block code độc lập để phân chia các UI (giao diện người dùng) thành các phân nhỏ riêng lẻ để dễ dàng quản lý và tái sử dụng.
     async componentDidMount() {
-       
+
         this.getDataPatient();
 
     }
     getDataPatient = async () => {
         let { user } = this.props;
-
-        let res = await getHistoryBookingForDoctor({
-            doctorId: user.id
+      
+        let res = await getHistoryBookingForPatient({
+            patientId: user.id
         })
         if (res && res.errCode === 0) {
             this.setState({
@@ -42,7 +40,7 @@ class TableManageBookings extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-       
+
         if (this.props.language !== prevProps.language) {
 
         }
@@ -54,7 +52,7 @@ class TableManageBookings extends Component {
         })
 
     }
-    
+
     handleBtnConfirm = (item) => {
         let data = {
             doctorId: item.doctorId,
@@ -62,11 +60,11 @@ class TableManageBookings extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             statusId: item.statusId,
-            phoneNumber: item.phoneNumber
+            // phoneNumber: item.doctorPhone.phoneNumber
         }
         this.setState({
             isOpenRemedyModal: true,
@@ -82,9 +80,9 @@ class TableManageBookings extends Component {
 
 
         //khi muốn render ra 1 thứ gì đó trong react, chúng ta phải có hàm return, và trong đó bắt buộc là 1 khối
-        
+
        
-        let { dataPatient ,isOpenRemedyModal, dataModal } = this.state;
+        let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
         return (
             <React.Fragment>
                 <div className="users-container">
@@ -99,16 +97,17 @@ class TableManageBookings extends Component {
 
                         </div>
 
-                        <table id="TableManageBookings" style={{ width: '100%' }}>
+                        <table id="TableManageBooking" style={{ width: '100%' }}>
                             <tbody>
                                 <tr>
                                     <th><FormattedMessage id="patient.booking-modal.numerical-order" /></th>
+                                    <th><FormattedMessage id="patient.booking-modal.doctorName" /></th>
+                                    <th><FormattedMessage id="patient.booking-modal.email" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.time" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
-                                    <th><FormattedMessage id="patient.booking-modal.email" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                    {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                    <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                     <th>Actions</th>
                                 </tr>
@@ -119,16 +118,17 @@ class TableManageBookings extends Component {
                                     return (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
+                                            <td>{`${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`}</td>
+                                            <td>{item.patientData.email}</td>
                                             <td>{date}</td>
                                             <td>{item.patientData.firstName}</td>
                                             <td>{item.phoneNumber}</td>
-                                            <td>{item.patientData.email}</td>
                                             <td>{item.patientData.address}</td>
                                             {/* <td>{item.plantName}</td> */}
                                             <td>{item.reasons}</td>
                                             <td>
                                                 <button className="mp-btn-confirm"
-                                                    onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.viewbooking" /></button>
+                                                    onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
                                                 {/* <button className="btn-delete" onClick={() => this.handleDeleteBooking(item)}><i className="fa-solid fa-trash"></i></button> */}
                                                 {/* item là 1 object lưu trữ tất cả thông tin của người dùng */}
                                             </td>
@@ -164,8 +164,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-       
+
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableManageBookings);
+export default connect(mapStateToProps, mapDispatchToProps)(TableManageBooking);

@@ -62,7 +62,7 @@ class TableManageBookings extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             statusId: item.statusId,
@@ -108,7 +108,7 @@ class TableManageBookings extends Component {
                                     <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.email" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                    {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                    <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                     <th>Actions</th>
                                 </tr>
