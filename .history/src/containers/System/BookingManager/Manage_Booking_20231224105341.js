@@ -4,15 +4,14 @@ import { connect } from 'react-redux';
 import './ManageBooking.scss';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
-import { getAllPaidBookingForAdminBooking, postSendSchedule, postCancelBooking } from '../../../services/userService';
+import { getAllBookingForAdminBooking, postSendSchedule } from '../../../services/userService';
 import { LANGUAGES, CommonUtils } from '../../../utils';
-import CancelBookingModal from './CancelBookingModal';
+import RemedyModal from './RemedyModal';
 import { toast } from 'react-toastify';
 import LoadingOverLay from "react-loading-overlay";
-
 import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 import Lightbox from 'react-image-lightbox';
-
+import TableManagePaidBooking from './TableManagePaidBooking';
 //lodash hỗ trợ ta kiểm tra và thao tác với mảng dễ dàng hơn
 
 
@@ -24,7 +23,7 @@ class Manage_Booking extends Component {
             currentDate: moment(new Date()).startOf('day').valueOf(),
             dataPatient: [],
             isOpenRemedyModal: false,
-            isOpenBookingModal: false,
+            isOpenCancelModal: false,
             dataModal: {},
             isShowLoading: false,
             isOpen: false,
@@ -43,22 +42,22 @@ class Manage_Booking extends Component {
     }
 
 
-    // if(data) {
-    //     let img = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} />
-    // }
 
     getDataPatient = async () => {
-        let status = 'S5'
+        let status = 'S3'
         let { currentDate } = this.state;
+
         let formatedDate = new Date(currentDate).getTime();
-        let res = await getAllPaidBookingForAdminBooking({
+        let res = await getAllBookingForAdminBooking({
             statusId: status,
             date: formatedDate
         })
         if (res && res.errCode === 0) {
             this.setState({
-                dataPatient: res.data
+
+                dataPatient: res.data,
             })
+
         }
     }
     async componentDidUpdate(prevProps, prevState, snapshot) {
@@ -66,6 +65,7 @@ class Manage_Booking extends Component {
 
         }
     }
+
 
 
     handleOnChangeDatePicker = (date) => {
@@ -79,13 +79,13 @@ class Manage_Booking extends Component {
     }
     //nút bấm xác nhận mở ra modal gửi thông tin khám bệnh
     handleBtnConfirm = (item) => {
+
         let data = {
             doctorId: item.doctorId,
             patientId: item.patientId,
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             phoneNumber: item.phoneNumber,
@@ -100,28 +100,7 @@ class Manage_Booking extends Component {
         })
 
     }
-    handleBtnCancel = (item) => {
-        let data = {
-            doctorId: item.doctorId,
-            patientId: item.patientId,
-            email: item.patientData.email,
-            timeType: item.timeType,
-            patientName: item.patientData.firstName,
-            // plantName: item.plantName,
-            reasons: item.reasons,
-            avatar: item.image,
-            phoneNumber: item.phoneNumber,
-            address: item.patientData.address,
-            price: item.priceTypeDataBooking.valueVi,
-            doctorName: `${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`
-        }
-        this.setState({
-            isOpenBookingModal: true,
-            dataModal: data,
-            avatar: ''
-        })
 
-    }
     closeRemedyModal = () => {
         this.setState({
             isOpenRemedyModal: false,
@@ -129,14 +108,14 @@ class Manage_Booking extends Component {
         })
 
     }
-    closeBookingModal = () => {
+    closeCancelModal = () => {
         this.setState({
-            isOpenBookingModal: false,
+            isOpenCancelModal: false,
             dataModal: {}
         })
 
     }
-    sendSchedule= async (dataChild) => {
+    sendSchedule = async (dataChild) => {
         let { dataModal } = this.state;
         this.setState({
             isShowLoading: true
@@ -154,7 +133,7 @@ class Manage_Booking extends Component {
             this.setState({
                 isShowLoading: false
             })
-            toast.success('Send Remedy succeeds');
+            toast.success('Success');
             this.closeRemedyModal();
             await this.getDataPatient();
         } else {
@@ -162,37 +141,10 @@ class Manage_Booking extends Component {
                 isShowLoading: false
             })
             toast.error('Something went wrong...');
-            console.log('error remdey is:', res)
+            console.log('error  is:', res)
         }
     }
-    cancelBooking = async (dataChild) => {
-        let { dataModal } = this.state;
-        this.setState({
-            isShowLoading: true
-        })
-        let res = await postCancelBooking({
-            email: dataChild.email,
-            doctorId: dataModal.doctorId,
-            patientId: dataModal.patientId,
-            timeType: dataModal.timeType,
-            language: this.props.language,
-            patientName: dataModal.patientName,
-        })
-        if (res && res.errCode === 0) {
-            this.setState({
-                isShowLoading: false
-            })
-            toast.success('Send Cancel succeeds');
-            this.closeBookingModal();
-            await this.getDataPatient();
-        } else {
-            this.setState({
-                isShowLoading: false
-            })
-            toast.error('Something went wrong...');
-            console.log('error remdey is:', res)
-        }
-    }
+
     handleOnChangeImage = async (event) => {
         let data = event.target.files;
         let file = data[0];
@@ -225,18 +177,28 @@ class Manage_Booking extends Component {
 
         })
     }
+
     render() {
         let { language } = this.props;
-        let { dataPatient, dataModal, isOpenBookingModal } = this.state;
-        console.log('dataPatient:', dataPatient);
+        let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
+        // const searchHandle = async (event) => {
+        //     let key = event.target.value;
+        //     let result = await fetch(`http://localhost:3000/search/${key}`);
+        //     result = await result.json();
+        //     if(result){
+        //        dataPatient(result) ;
+        //     }
+        // }
         return (
             <>
                 <LoadingOverLay active={this.state.isShowLoading}
                     spinner
                     text='Loading...'>
                     <div className="manage-patient-container">
-                        <div className="m-p-title">Lịch hẹn đã thanh toán</div>
+                        <div className="m-p-title"><FormattedMessage id="patient.booking-modal.manage-booking" /></div>
+
                         <div className="manage-patient-body row">
+
                             <div className="col-4 form-group">
                                 <label><FormattedMessage id="patient.booking-modal.time" /></label>
                                 <DatePicker
@@ -257,7 +219,6 @@ class Manage_Booking extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                            {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th>Actions</th>
@@ -276,8 +237,9 @@ class Manage_Booking extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
+                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
+                                                        <td>{item}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
                                                                 onChange={(event) => this.handleOnChangeImage(event)} />
@@ -289,10 +251,10 @@ class Manage_Booking extends Component {
                                                         </div>
                                                         </td>
                                                         <td>
-                                                            
-                                                            <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
                                                             <button className="mp-btn-confirm"
-                                                                onClick={() => this.handleBtnCancel(item)}><FormattedMessage id="patient.booking-modal.cancel-booking" /></button>
+                                                                onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.confirm" /></button>
+                                                            <button onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
+
                                                         </td>
                                                     </tr>
                                                 )
@@ -311,19 +273,31 @@ class Manage_Booking extends Component {
 
                         </div>
                     </div>
-                   
-                    <CancelBookingModal
-                        isOpenBooking={isOpenBookingModal}
+                    <RemedyModal
+                        isOpenModal={isOpenRemedyModal}
                         dataModal={dataModal}
-                        closeBookingModal={this.closeBookingModal}
-                        cancelBooking={this.cancelBooking} />
+                        closeRemedyModal={this.closeRemedyModal}
+                        sendSchedule={this.sendSchedule}
+                        dataPatient={dataPatient} />
+
                     {this.state.isOpen === true &&
                         <Lightbox
                             mainSrc={this.state.previewImgURL}
                             onCloseRequest={() => this.setState({ isOpen: false })} />}
+                    {/* <div style={{ display: 'none' }}>
+                        <Resume
+                        dataModal = {dataModal}/>
+                    </div> */}
 
                 </LoadingOverLay>
-             
+                <div className="col-12 mb-5">
+                    <TableManagePaidBooking
+                        handleEditUserFromParentKey={this.handleEditUserFromParent}
+                        action={this.state.action} />
+                </div>
+
+
+
 
             </>
 

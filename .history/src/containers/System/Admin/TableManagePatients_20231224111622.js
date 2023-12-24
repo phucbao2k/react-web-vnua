@@ -87,7 +87,7 @@ class TableManagePatients extends Component {
                                     <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                    {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                    <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                     <th>Actions</th>
 
@@ -99,23 +99,32 @@ class TableManagePatients extends Component {
                                         // thì function map() mới hoạt động được
                                         return (
                                             <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>{`${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`}</td>
-                                                <td>{item.patientData.email}</td>
-                                                <td>{date}</td>
-                                                <td>{item.patientData.firstName}</td>
-                                                <td>{item.phoneNumber}</td>
-                                                <td>{item.patientData.address}</td>
-                                                {/* <td>{item.plantName}</td> */}
-                                                <td>{item.reasons}</td>
-                                              
-                                                <td>
-                                                    {/* <button className="mp-btn-confirm"
-                                                    onClick={() => this.handleBtnConfirm(item)}>Xác nhận</button> */}
-                                                    <button className="btn-delete" onClick={() => this.handleDeleteBooking(item)}><i className="fa-solid fa-trash"></i></button>
-                                                    {/* item là 1 object lưu trữ tất cả thông tin của người dùng */}
-                                                </td>
-                                            </tr>
+                                                        <td>{index + 1}</td>
+                                                        <td>{`${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`}</td>
+                                                        <td>{item.patientData.email}</td>
+                                                        <td>{time}</td>
+                                                        <td>{item.patientData.firstName}</td>
+                                                        <td>{item.phoneNumber}</td>
+                                                        <td>{item.patientData.address}</td>
+                                                        <td>{item.reasons}</td>
+                                                        <td>{item.image}</td>
+                                                        <td>   <div className="preview-img-container">
+                                                            <input id="previewImg" type="file" hidden
+                                                                onChange={(event) => this.handleOnChangeImage(event)} />
+                                                            <div className="preview-image" style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
+                                                                onClick={() => this.openPreviewImage()}
+                                                            >
+
+                                                            </div>
+                                                        </div>
+                                                        </td>
+                                                        <td>
+                                                            <button className="mp-btn-confirm"
+                                                                onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.confirm" /></button>
+                                                            <button onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.check" /></button>
+
+                                                        </td>
+                                                    </tr>
                                         )
                                     })}
                                 </tbody>

@@ -85,7 +85,7 @@ class Manage_Booking extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             phoneNumber: item.phoneNumber,
@@ -107,7 +107,7 @@ class Manage_Booking extends Component {
             email: item.patientData.email,
             timeType: item.timeType,
             patientName: item.patientData.firstName,
-            // plantName: item.plantName,
+            plantName: item.plantName,
             reasons: item.reasons,
             avatar: item.image,
             phoneNumber: item.phoneNumber,
@@ -257,7 +257,7 @@ class Manage_Booking extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.fullName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.phoneNumber" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.address" /></th>
-                                            {/* <th><FormattedMessage id="patient.booking-modal.plantName" /></th> */}
+                                            <th><FormattedMessage id="patient.booking-modal.plantName" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th>Actions</th>
@@ -276,7 +276,7 @@ class Manage_Booking extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
+                                                        <td>{item.plantName}</td>
                                                         <td>{item.reasons}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
