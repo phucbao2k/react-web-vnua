@@ -181,7 +181,6 @@ class Manage_Booking extends Component {
     render() {
         let { language } = this.props;
         let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
-        console.log('dataPatient:', dataPatient);
         // const searchHandle = async (event) => {
         //     let key = event.target.value;
         //     let result = await fetch(`http://localhost:3000/search/${key}`);
@@ -234,12 +233,12 @@ class Manage_Booking extends Component {
                                                         <td>{`${item.doctorNameData.lastName} ${item.doctorNameData.firstName}`}</td>
                                                         <td>{item.priceTypeDataBooking.valueVi}</td>
                                                         <td>{item.patientData.email}</td>
-                                                        <td>{time}</td>
+                                                        <td>{item.date}</td>
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
                                                         <td>{item.reasons}</td>
+                                                        <td>{item.image}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
                                                                 onChange={(event) => this.handleOnChangeImage(event)} />

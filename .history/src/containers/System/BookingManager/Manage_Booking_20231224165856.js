@@ -238,8 +238,8 @@ class Manage_Booking extends Component {
                                                         <td>{item.patientData.firstName}</td>
                                                         <td>{item.phoneNumber}</td>
                                                         <td>{item.patientData.address}</td>
-                                                        {/* <td>{item.plantName}</td> */}
                                                         <td>{item.reasons}</td>
+                                                        <td>{item.image}</td>
                                                         <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
                                                                 onChange={(event) => this.handleOnChangeImage(event)} />
