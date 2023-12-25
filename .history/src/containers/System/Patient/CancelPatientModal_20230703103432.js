@@ -43,9 +43,6 @@ class CancelPatientModal extends Component {
 
     handleCancelRemedy = () => {
         this.props.cancelRemedy(this.state)
-        setTimeout(() => {
-            window.location.href = 'http://localhost:7070/order/refund';
-        }, 7000);
     }
 
 
