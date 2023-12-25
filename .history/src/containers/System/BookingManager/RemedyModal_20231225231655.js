@@ -187,11 +187,26 @@ class RemedyModal extends Component {
                             />
                   
                             <label><FormattedMessage id="patient.booking-modal.time" /></label>
-                  
-                            <input className="form-control" type="text" value={this.state.timeType} 
+                    {dataModal && dataModal.length > 0 ?
+                        dataModal.map((item, index) => {
+                            let time = language === LANGUAGES.VI ?
+                                item.dataModal.valueVi : item.dataModal.valueEn;
+                            return (
+                                
+                                    
+                                <input className="form-control" type="text" value={time}
+                                    onChange={(event) => this.handleOnChangePlantName(event)}
+                                    disabled
+                                />
+                                 
+                              
+                            )
+                        })
+                        : <div>no data</div>}
+                            {/* <input className="form-control" type="text" value={this.state.timeType} 
                                 onChange={(event) => this.handleOnChangeTime(event)}
                                 disabled
-                            />
+                            /> */}
                             <label><FormattedMessage id="patient.booking-modal.reason" /></label>
                             <input className="form-control" type="text" value={this.state.reasons}
                                 onChange={(event) => this.handleOnChangeReason(event)}

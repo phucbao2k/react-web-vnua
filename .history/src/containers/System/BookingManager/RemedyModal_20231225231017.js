@@ -57,13 +57,19 @@ class RemedyModal extends Component {
                 phoneNumber: this.props.dataModal.phoneNumber,
                 patientName: this.props.dataModal.patientName,
                 address: this.props.dataModal.address,
-                 timeType: this.props.dataModal.timeType,
+                // timeType: this.props.dataModal.timeType,
                 reasons: this.props.dataModal.reasons,
                 price: this.props.dataModal.price,
                 doctorName: this.props.dataModal.doctorName
             })
         }
-       
+        if (prevProps.dataModal !== this.props.dataModal) {
+            this.setState({
+              
+                timeType: this.props.dataModal.timeType,
+              
+            })
+        }
 
     }
     switchView = () => {
@@ -187,11 +193,26 @@ class RemedyModal extends Component {
                             />
                   
                             <label><FormattedMessage id="patient.booking-modal.time" /></label>
-                  
-                            <input className="form-control" type="text" value={this.state.timeType} 
+                    {dataModal && dataModal.length > 0 ?
+                        dataModal.map((item, index) => {
+                            let time = language === LANGUAGES.VI ?
+                                item.timeTypedataModal.valueVi : item.timeTypedataModal.valueEn;
+                            return (
+                                
+                                    
+                                <input className="form-control" type="text" value={time}
+                                    onChange={(event) => this.handleOnChangePlantName(event)}
+                                    disabled
+                                />
+                                 
+                              
+                            )
+                        })
+                        : <div>no data</div>}
+                            {/* <input className="form-control" type="text" value={this.state.timeType} 
                                 onChange={(event) => this.handleOnChangeTime(event)}
                                 disabled
-                            />
+                            /> */}
                             <label><FormattedMessage id="patient.booking-modal.reason" /></label>
                             <input className="form-control" type="text" value={this.state.reasons}
                                 onChange={(event) => this.handleOnChangeReason(event)}

@@ -148,7 +148,7 @@ class TableManageBooking extends Component {
                                     <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.status" /></th>
-                                    <th>Hành động</th>
+                                
                                 </tr>
                                 {dataPatient && dataPatient.length > 0 && dataPatient.map((item, index) => {
                                     // để duyệt 1 vòng lặp, ta có thể dùng function map(), bắt buộc phải return ra 1 thứ gì đó
@@ -186,7 +186,7 @@ class TableManageBooking extends Component {
 
                                                     onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.check" /></button> */}
                                                 <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.view-image" /></button>
-                                                {/* <button className="btn-delete" onClick={() => this.handleDeleteBooking(item)}><i className="fa-solid fa-trash"></i></button> */}
+                                                <button className="btn-delete" onClick={() => this.handleDeleteBooking(item)}><i className="fa-solid fa-trash"></i></button>
                                                
                                             </td>
                                             {/*  item là 1 object lưu trữ tất cả thông tin của người dùng  */}

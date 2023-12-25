@@ -187,11 +187,14 @@ class RemedyModal extends Component {
                             />
                   
                             <label><FormattedMessage id="patient.booking-modal.time" /></label>
-                  
-                            <input className="form-control" type="text" value={this.state.timeType} 
-                                onChange={(event) => this.handleOnChangeTime(event)}
+                  <input className="form-control" type="text" value={this.state.phoneNumber}
+                                onChange={(event) => this.handleOnChangePhoneNumber(event)}
                                 disabled
                             />
+                            {/* <input className="form-control" type="text" value={this.state.timeType} 
+                                onChange={(event) => this.handleOnChangeTime(event)}
+                                disabled
+                            /> */}
                             <label><FormattedMessage id="patient.booking-modal.reason" /></label>
                             <input className="form-control" type="text" value={this.state.reasons}
                                 onChange={(event) => this.handleOnChangeReason(event)}

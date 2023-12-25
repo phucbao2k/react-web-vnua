@@ -263,7 +263,7 @@ class Manage_Patient extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.status" /></th>
-                                            <th>Hành động</th>
+                                            <th>Actions</th>
 
 
                                         </tr>

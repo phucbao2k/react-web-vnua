@@ -148,7 +148,7 @@ class TableManageBooking extends Component {
                                     <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                     <th><FormattedMessage id="patient.booking-modal.status" /></th>
-                                    <th>Hành động</th>
+                                    <th>Actions</th>
                                 </tr>
                                 {dataPatient && dataPatient.length > 0 && dataPatient.map((item, index) => {
                                     // để duyệt 1 vòng lặp, ta có thể dùng function map(), bắt buộc phải return ra 1 thứ gì đó

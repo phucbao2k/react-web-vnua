@@ -18,31 +18,15 @@ class DoctorManageSchedule extends Component {
             currentDate: '',
             rangeTime: [],
             minDate: moment().calendar(),
-            selectedPrice: {},
-            listPrice: [],
+            selectedPrice: {}, // Thêm state cho selectedPrice
         }
     }
 
-    async componentDidMount() {
-        let { userInfo } = this.props;
+    componentDidMount() {
         this.props.fetchAllScheduleTimes();
-
-        // Gọi hàm fetchDoctorPrice khi component được tạo
-        if (userInfo && userInfo.id) {
-            await this.fetchDoctorPrice(userInfo.id);
-        }
     }
 
-    async componentDidUpdate(prevProps, prevState, snapshot) {
-        const { userInfo } = this.props;
-
-        if (prevProps.userInfo.id !== userInfo.id) {
-            // Gọi hàm fetchDoctorPrice khi doctorId thay đổi
-            if (userInfo && userInfo.id) {
-                await this.fetchDoctorPrice(userInfo.id);
-            }
-        }
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
             if (data && data.length > 0) {
@@ -56,28 +40,21 @@ class DoctorManageSchedule extends Component {
 
     fetchDoctorPrice = async (doctorId) => {
         try {
-            // Gọi API để lấy thông tin bác sĩ
             let res = await getDetailInforDoctor(doctorId);
 
-            // Log toàn bộ response từ API để kiểm tra
-            console.log('API Response:', res);
-
             if (res && res.errCode === 0 && res.data && res.data.Markdown) {
-                // Lấy priceId từ dữ liệu trả về
-                let priceId = res.data.Doctor_Infor?.priceId;
+                let priceId = res.data.Doctor_Infor.priceId;
 
-                // Cập nhật state cho selectedPrice
-                this.setState({
-                    selectedPrice: { value: priceId } || {},
-                });
-
-                // Log để kiểm tra giá trị
                 console.log('Fetched priceId:', priceId);
-                console.log('Selected price:', this.state.selectedPrice);
+
+                let selectedPrice = this.state.listPrice.find(item => item.value === priceId);
+
+                this.setState({
+                    selectedPrice: selectedPrice || {},
+                });
             }
         } catch (error) {
             console.error("Error fetching doctor price:", error);
-            // Xử lý lỗi nếu cần thiết
         }
     }
 

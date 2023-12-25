@@ -417,17 +417,16 @@ class BookingModal extends Component {
                                         onClick={closeBookingClose}>
                                         <FormattedMessage id="patient.booking-modal.btnOffline" />
                                     </button>
-                                    <button className="btn-booking-cancel"
-                                        onClick={closeBookingClose}>
-                                      Thoát
-                                    </button>
                                 </div>
                             )}
                            
                             <button className="btn-booking-cancel"
                                 onClick={closeBookingClose}>
                                 <FormattedMessage id="patient.booking-modal.btnCancel" />
-                               
+                                <span 
+                                    onClick={closeBookingClose}>
+                                    <i className="fa-solid fa-xmark"></i>
+                                </span>
                             </button>
                            
                         </div>

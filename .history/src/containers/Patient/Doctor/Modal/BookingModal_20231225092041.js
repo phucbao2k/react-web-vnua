@@ -265,7 +265,7 @@ class BookingModal extends Component {
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
             email: this.state.email,
-            // address: this.state.address,
+            address: this.state.address,
             reasons: this.state.reasons,
             date: this.props.dataTime.date,
             birthday: date,
@@ -352,21 +352,6 @@ class BookingModal extends Component {
                                     <input className="form-control"
                                         onChange={(event) => this.handleOnChangeInput(event, 'address')} />
                                 </div> */}
-                                <div className="col-6 form-group">
-                                    <label><FormattedMessage id="patient.booking-modal.avatar" /></label>
-                                    <div className="preview-img-container">
-                                        <input className="form-control" id="previewImg" type="file" hidden
-                                            onChange={(event) => this.handleOnChangeImage(event)}
-                                        />
-                                        <label className="label-upload" htmlFor="previewImg"><FormattedMessage id="patient.booking-modal.upload" /><i className="fa-solid fa-upload"></i></label>
-
-                                        <div className="preview-image" style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
-                                            onClick={() => this.openPreviewImage()}
-                                        >
-
-                                        </div>
-                                    </div>
-                                </div>
                                 <div className="col-12 form-group">
                                     <label><FormattedMessage id="patient.booking-modal.reason" /></label>
                                     <input className="form-control"
@@ -417,17 +402,12 @@ class BookingModal extends Component {
                                         onClick={closeBookingClose}>
                                         <FormattedMessage id="patient.booking-modal.btnOffline" />
                                     </button>
-                                    <button className="btn-booking-cancel"
-                                        onClick={closeBookingClose}>
-                                      Thoát
-                                    </button>
                                 </div>
                             )}
                            
                             <button className="btn-booking-cancel"
                                 onClick={closeBookingClose}>
                                 <FormattedMessage id="patient.booking-modal.btnCancel" />
-                               
                             </button>
                            
                         </div>

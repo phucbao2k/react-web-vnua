@@ -265,7 +265,7 @@ class BookingModal extends Component {
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
             email: this.state.email,
-            // address: this.state.address,
+            address: this.state.address,
             reasons: this.state.reasons,
             date: this.props.dataTime.date,
             birthday: date,
@@ -417,17 +417,12 @@ class BookingModal extends Component {
                                         onClick={closeBookingClose}>
                                         <FormattedMessage id="patient.booking-modal.btnOffline" />
                                     </button>
-                                    <button className="btn-booking-cancel"
-                                        onClick={closeBookingClose}>
-                                      Thoát
-                                    </button>
                                 </div>
                             )}
                            
                             <button className="btn-booking-cancel"
                                 onClick={closeBookingClose}>
                                 <FormattedMessage id="patient.booking-modal.btnCancel" />
-                               
                             </button>
                            
                         </div>

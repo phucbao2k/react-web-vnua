@@ -66,20 +66,28 @@ class DoctorManageSchedule extends Component {
                 // Lấy priceId từ dữ liệu trả về
                 let priceId = res.data.Doctor_Infor?.priceId;
 
-                // Cập nhật state cho selectedPrice
-                this.setState({
-                    selectedPrice: { value: priceId } || {},
-                });
+                // Lấy ra giá từ state.listPrice dựa trên priceId
+                let selectedPrice = this.state.listPrice.find(item => item.key === priceId);
+
 
                 // Log để kiểm tra giá trị
                 console.log('Fetched priceId:', priceId);
-                console.log('Selected price:', this.state.selectedPrice);
+                console.log('Selected price:', selectedPrice);
+
+                // Cập nhật state cho selectedPrice
+                this.setState({
+                    selectedPrice: selectedPrice || {},
+                });
+
+                // Log priceId để kiểm tra
+                console.log('Updated selectedPrice:', this.state.selectedPrice);
             }
         } catch (error) {
             console.error("Error fetching doctor price:", error);
             // Xử lý lỗi nếu cần thiết
         }
     }
+
 
     handleOnChangeDatePicker = (date) => {
         this.setState({

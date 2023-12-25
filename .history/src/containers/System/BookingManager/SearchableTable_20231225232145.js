@@ -35,7 +35,7 @@ class SearchableTable extends Component {
             doctorId: item.doctorId,
             patientId: item.patientId,
             email: item.patientData.email,
-            timeType: item.timeTypeDataPatient.valueVi,
+            timeType: item.timeTypeDataPatienttimeType,
             patientName: item.patientData.firstName,
             reasons: item.reasons,
             avatar: item.image,

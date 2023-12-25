@@ -263,7 +263,7 @@ class Manage_Patient extends Component {
                                             <th><FormattedMessage id="patient.booking-modal.reason" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.avatar" /></th>
                                             <th><FormattedMessage id="patient.booking-modal.status" /></th>
-                                            <th>Hành động</th>
+                                            <th>Actions</th>
 
 
                                         </tr>
@@ -287,7 +287,7 @@ class Manage_Patient extends Component {
                                                         <td>{item.patientData.address}</td>
                                                         {/* <td>{item.plantName}</td> */}
                                                         <td>{item.reasons}</td>
-                                                        <td>   <div className="preview-img-container">
+                                                        {/* <td>   <div className="preview-img-container">
                                                             <input id="previewImg" type="file" hidden
                                                                 onChange={(event) => this.handleOnChangeImage(event)} />
                                                             <div className="preview-image" style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
@@ -296,12 +296,12 @@ class Manage_Patient extends Component {
 
                                                             </div>
                                                         </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td>{status}</td>
                                                         <td>
                                                             {/* <button className="mp-btn-confirm"
-                                                                onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.btnConfirm" /></button> */}
-                                                            <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.view-image" /></button>
+                                                                onClick={() => this.handleBtnConfirm(item)}><FormattedMessage id="patient.booking-modal.btnConfirm" /></button>
+                                                            // <button className="mp-btn-confirm" onClick={() => this.handleEditUserFromParent(item)}><FormattedMessage id="patient.booking-modal.view-image" /></button> */}
                                                             <button className="mp-btn-confirm"
                                                                 onClick={() => this.handleBtnCancel(item)}>Hủy lịch</button>
                                                             {/* <button className="btn-delete" onClick={() => this.handleDeletePatientBooking(item)}><i className="fa-solid fa-trash"></i></button> */}

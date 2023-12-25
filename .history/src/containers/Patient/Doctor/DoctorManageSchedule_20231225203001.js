@@ -19,30 +19,19 @@ class DoctorManageSchedule extends Component {
             rangeTime: [],
             minDate: moment().calendar(),
             selectedPrice: {},
-            listPrice: [],
+            listPrice: [], // Add this line to initialize listPrice
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         let { userInfo } = this.props;
         this.props.fetchAllScheduleTimes();
-
-        // Gọi hàm fetchDoctorPrice khi component được tạo
-        if (userInfo && userInfo.id) {
-            await this.fetchDoctorPrice(userInfo.id);
+        if (userInfo && !_.isEmpty(userInfo)) {
+            this.fetchDoctorPrice(userInfo.id);
         }
     }
 
-    async componentDidUpdate(prevProps, prevState, snapshot) {
-        const { userInfo } = this.props;
-
-        if (prevProps.userInfo.id !== userInfo.id) {
-            // Gọi hàm fetchDoctorPrice khi doctorId thay đổi
-            if (userInfo && userInfo.id) {
-                await this.fetchDoctorPrice(userInfo.id);
-            }
-        }
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
             if (data && data.length > 0) {
@@ -55,36 +44,53 @@ class DoctorManageSchedule extends Component {
     }
 
     fetchDoctorPrice = async (doctorId) => {
-        try {
-            // Gọi API để lấy thông tin bác sĩ
-            let res = await getDetailInforDoctor(doctorId);
-
-            // Log toàn bộ response từ API để kiểm tra
-            console.log('API Response:', res);
-
-            if (res && res.errCode === 0 && res.data && res.data.Markdown) {
-                // Lấy priceId từ dữ liệu trả về
-                let priceId = res.data.Doctor_Infor?.priceId;
-
-                // Cập nhật state cho selectedPrice
-                this.setState({
-                    selectedPrice: { value: priceId } || {},
-                });
-
-                // Log để kiểm tra giá trị
-                console.log('Fetched priceId:', priceId);
-                console.log('Selected price:', this.state.selectedPrice);
-            }
-        } catch (error) {
-            console.error("Error fetching doctor price:", error);
-            // Xử lý lỗi nếu cần thiết
+        let res = await getDetailInforDoctor(doctorId);
+        if (res && res.errCode === 0 && res.data && res.data.Markdown) {
+            let priceId = res.data.Doctor_Infor.priceId;
+            let selectedPrice = this.state.listPrice.find(item => item.value === priceId);
+            this.setState({
+                selectedPrice: selectedPrice || {},
+            });
         }
     }
 
-    handleOnChangeDatePicker = (date) => {
+    buildDataInputSelect = (inputData, type) => {
+        let result = [];
+        let { language, userInfo } = this.props;
+
+        if (inputData && inputData.length > 0) {
+            inputData.map((item, index) => {
+                let object = {};
+                let labelEn = `${item.lastName} ${item.firstName}`;
+                let labelVi = `${item.firstName} ${item.lastName}`;
+                object.label = language === LANGUAGES.VI ? labelVi : labelEn;
+                object.value = userInfo.id;
+                result.push(object);
+            })
+
+            if (type === 'PRICE') {
+                inputData.map((item, index) => {
+                    let object = {};
+                    let labelEn = `${item.valueEn} USD`;
+                    let labelVi = `${item.valueVi}`;
+                    object.label = language === LANGUAGES.VI ? labelVi : labelEn;
+                    object.value = item.keyMap;
+                    result.push(object);
+                })
+            }
+        }
+        return result;
+    }
+
+    handleOnChangeDatePicker = async (date) => {
         this.setState({
             currentDate: date[0]
-        })
+        });
+
+        let { userInfo } = this.props;
+        if (userInfo && !_.isEmpty(userInfo)) {
+            this.fetchDoctorPrice(userInfo.id);
+        }
     }
 
     handleClickBtnTime = (time) => {
@@ -107,17 +113,10 @@ class DoctorManageSchedule extends Component {
 
         if (!currentDate) {
             toast.error("Invalid date!");
-            return;
         }
 
         if (userInfo && _.isEmpty(userInfo)) {
-            toast.error("Invalid selected doctor!");
-            return;
-        }
-
-        // Kiểm tra giá trị của selectedPrice
-        if (_.isEmpty(selectedPrice)) {
-            toast.error("Invalid selected price!");
+            toast.error("Invalid selected doctor! ");
             return;
         }
 
@@ -131,11 +130,11 @@ class DoctorManageSchedule extends Component {
                     object.doctorId = userInfo.id;
                     object.date = formatedDate;
                     object.timeType = schedule.keyMap;
-                    object.priceId = selectedPrice.value; // Sử dụng selectedPrice.value
+                    object.priceId = selectedPrice.value || ''; // Ensure priceId is set
                     result.push(object);
                 })
             } else {
-                toast.error("Invalid selected time!");
+                toast.error("Invalid selected time! ");
                 return;
             }
         }
@@ -143,15 +142,14 @@ class DoctorManageSchedule extends Component {
         let res = await saveBulkScheduleDoctor({
             arrSchedule: result,
             doctorId: userInfo.id,
-            formatedDate: formatedDate,
-            selectedPrice: selectedPrice.value
+            formatedDate: formatedDate
         });
 
         if (res && res.errCode === 0) {
             toast.success("Save Infor succeed!");
         } else {
             toast.error("Error saving schedule");
-            console.log('Error saving schedule >>> res:', res);
+            console.log('Error saveBulkScheduleDoctor >>> res: ', res);
         }
     }
 
@@ -168,8 +166,7 @@ class DoctorManageSchedule extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-6 form-group">
-                            <label>
-                                <FormattedMessage id="manage-schedule.choose-date" /> </label>
+                            <label><FormattedMessage id="manage-schedule.choose-date" /> </label>
                             <DatePicker
                                 value={this.state.currentDate}
                                 className="form-control"

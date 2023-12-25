@@ -187,7 +187,7 @@ class RemedyModal extends Component {
                             />
                   
                             <label><FormattedMessage id="patient.booking-modal.time" /></label>
-                  
+                    
                             <input className="form-control" type="text" value={this.state.timeType} 
                                 onChange={(event) => this.handleOnChangeTime(event)}
                                 disabled

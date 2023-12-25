@@ -41,8 +41,7 @@ class DoctorManageSchedule extends Component {
             if (userInfo && userInfo.id) {
                 await this.fetchDoctorPrice(userInfo.id);
             }
-        }
-
+        
         if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
             if (data && data.length > 0) {
@@ -66,14 +65,16 @@ class DoctorManageSchedule extends Component {
                 // Lấy priceId từ dữ liệu trả về
                 let priceId = res.data.Doctor_Infor?.priceId;
 
+                // Lấy ra giá từ state.listPrice dựa trên priceId
+                let selectedPrice = this.state.listPrice.find(item => item.value === priceId);
+
                 // Cập nhật state cho selectedPrice
                 this.setState({
-                    selectedPrice: { value: priceId } || {},
+                    selectedPrice: selectedPrice || {},
                 });
 
-                // Log để kiểm tra giá trị
+                // Log priceId để kiểm tra
                 console.log('Fetched priceId:', priceId);
-                console.log('Selected price:', this.state.selectedPrice);
             }
         } catch (error) {
             console.error("Error fetching doctor price:", error);

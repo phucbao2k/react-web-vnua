@@ -4,7 +4,7 @@ import { getExtraInforDoctorById } from '../../../services/userService';
 import { connect } from 'react-redux';
 import { getProfileDoctorById } from '../../../services/userService';
 class VNPayPaymentButton extends Component {
-    apiUrl = 'http://localhost:7070';
+    apiUrl = 'http://localhost:7070/order';
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +51,7 @@ class VNPayPaymentButton extends Component {
         }
     };
 
-    handlePayment = () => {
+    handlePayment = async () => {
         try {
             const { extraInfor } = this.state;
 
@@ -66,19 +66,36 @@ class VNPayPaymentButton extends Component {
             const amount = Number(amountVi);
 
             console.log('Amount:', amount);
-            console.log('AmountVi:', amountVi);
-            // Tạo URL redirect dựa trên `/order/create_payment_url` và thêm query parameter
-            const redirectUrl = `/order/create_payment_url?amount=${amount}&bankCode=&orderDescription=Payment+for+online+appointment+booking&orderType=billpayment&language=vn`;
 
-            console.log('Redirect URL:', redirectUrl);
+            const requestBody = {
+                amount: amount,
+                bankCode: 'NCB',
+                orderDescription: 'Payment for online appointment booking',
+                orderType: 'billpayment',
+                language: 'vn',
+            };
 
-            // Chuyển hướng đến URL được tạo
-            window.location.href = this.apiUrl + redirectUrl;
+            console.log('Request Body:', requestBody);
+
+            const response = await fetch(`${this.apiUrl}/order/create_payment_url`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            console.log('Full Response:', response);
+
+            const data = await response.json();
+
+            setTimeout(() => {
+                window.location.href = data.redirectUrl;
+            }, 500);
         } catch (error) {
             console.error('Error during payment:', error);
         }
     };
-
 
 
     isValidNumber = (value) => {

@@ -66,7 +66,7 @@ class VNPayPaymentButton extends Component {
             const amount = Number(amountVi);
 
             console.log('Amount:', amount);
-            console.log('AmountVi:', amountVi);
+
             // Tạo URL redirect dựa trên `/order/create_payment_url` và thêm query parameter
             const redirectUrl = `/order/create_payment_url?amount=${amount}&bankCode=&orderDescription=Payment+for+online+appointment+booking&orderType=billpayment&language=vn`;
 
