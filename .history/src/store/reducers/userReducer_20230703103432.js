@@ -4,7 +4,7 @@ const initialState = {
     isLoggedIn: false,
     userInfo: null
 }
-// ...state: copy state hiện tại, để có thể gán vào biến mới
+
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.USER_LOGIN_SUCCESS:

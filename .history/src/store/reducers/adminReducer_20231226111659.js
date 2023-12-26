@@ -14,13 +14,13 @@ const initialState = {
     specialties: [],
     handbooks: [],
     bookings: [],
-    price: []
+  price: []
 }
-// ...state: copy state hiện tại, để có thể gán vào biến mới
+// ...state: copy stat
 
 const adminReducer = (state = initialState, action) => {
     switch (action.type) {
-
+ 
         case actionTypes.FETCH_GENDER_START:
             let copy1 = { ...state };
             copy1.isLoadingGenders = true;
@@ -134,7 +134,7 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-
+    
         case actionTypes.FETCH_ALL_DOCTORS_SUCCESS:
             state.allDoctors = action.dataDocs;
             return {
@@ -165,7 +165,7 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-
+      
         default:
             return state;
     }

@@ -7,7 +7,7 @@ const initContentOfConfirmModal = {
     dataFunc: null
 }
 
-// ...state: copy state hiện tại, để có thể gán vào biến mới
+
 
 const initialState = {
     started: true,
