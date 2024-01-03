@@ -6,7 +6,7 @@ import * as actions from "../../store/actions";
 import { FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router';
 import logo from '../../assets/images.png';
-import SearchDoctor from '../HomePage/Section/SearchDoctor.js';
+import { SearchDoctor } from '../HomePage/Section/SearchDoctor.js';
 import './reponsive-header.scss';
 class HomeHeader extends Component {
     constructor(props) {
@@ -145,9 +145,7 @@ class HomeHeader extends Component {
                         <div className="title1"><FormattedMessage id="banner.title1" /></div>
                         <div className="title2"><FormattedMessage id="banner.title2" /></div>
                     </div>
-                    <SearchDoctor />
                 </div>
-               
             </React.Fragment>
 
         )

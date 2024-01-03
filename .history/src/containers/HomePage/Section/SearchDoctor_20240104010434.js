@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './SearchDoctor.scss';
-const searchKeywords = ["Thạc sĩ", "Tiến sĩ", "Phó giáo sư", "Giáo sư", "Bachelor", "Doctor", "Associate Professor", "Professor"];
+
 class SearchDoctor extends Component {
     constructor(props) {
         super(props);
@@ -17,18 +17,11 @@ class SearchDoctor extends Component {
     fetchData = async () => {
         try {
             const response = await axios.post('http://localhost:7070/api/search-doctor', { searchTerm: this.state.searchTerm });
-            const filteredResults = response.data.filter(result => {
-                return searchKeywords.some(keyword =>
-                    result.valueVi.toLowerCase().includes(keyword.toLowerCase()) ||
-                    result.valueEn.toLowerCase().includes(keyword.toLowerCase())
-                );
-            });
-            this.setState({ searchResults: filteredResults });
+            this.setState({ searchResults: response.data });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
     };
-
 
     handleSearchChange = (event) => {
         const searchTerm = event.target.value;

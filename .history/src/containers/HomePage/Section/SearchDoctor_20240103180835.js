@@ -1,9 +1,9 @@
-// SearchDoctor.js
-
 import React, { Component } from 'react';
 import axios from 'axios';
+import Fuse from 'fuse.js';
+
 import './SearchDoctor.scss';
-const searchKeywords = ["Thạc sĩ", "Tiến sĩ", "Phó giáo sư", "Giáo sư", "Bachelor", "Doctor", "Associate Professor", "Professor"];
+
 class SearchDoctor extends Component {
     constructor(props) {
         super(props);
@@ -16,43 +16,39 @@ class SearchDoctor extends Component {
 
     fetchData = async () => {
         try {
-            const response = await axios.post('http://localhost:7070/api/search-doctor', { searchTerm: this.state.searchTerm });
-            const filteredResults = response.data.filter(result => {
-                return searchKeywords.some(keyword =>
-                    result.valueVi.toLowerCase().includes(keyword.toLowerCase()) ||
-                    result.valueEn.toLowerCase().includes(keyword.toLowerCase())
-                );
-            });
-            this.setState({ searchResults: filteredResults });
+            const response = await axios.get('/api/search-doctor');
+            this.setState({ searchResults: response.data });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
     };
 
-
     handleSearchChange = (event) => {
         const searchTerm = event.target.value;
-        this.setState({ searchTerm, showDropdown: searchTerm.trim() !== '' }, () => {
-            if (searchTerm.trim() !== '') {
-                this.fetchData();
-            }
+        this.setState({ searchTerm, showDropdown: true }, () => {
+            // Gọi fetchData khi searchTerm thay đổi
+            this.fetchData();
         });
     };
 
     handleItemClick = (result) => {
+        // Xử lý khi một kết quả được chọn từ dropdown
         console.log('Selected:', result);
-        // Perform other actions here, e.g., redirect to detail page
+        // Có thể thực hiện hành động khác tại đây, ví dụ: chuyển hướng đến trang chi tiết
     };
 
     handleOutsideClick = () => {
+        // Ẩn dropdown khi click ra ngoài
         this.setState({ showDropdown: false });
     };
 
     componentDidMount() {
+        // Bắt sự kiện click ra ngoài để ẩn dropdown
         document.addEventListener('click', this.handleOutsideClick);
     }
 
     componentWillUnmount() {
+        // Hủy bỏ sự kiện khi component unmount
         document.removeEventListener('click', this.handleOutsideClick);
     }
 
@@ -71,7 +67,7 @@ class SearchDoctor extends Component {
                     <ul className="search-results">
                         {searchResults.map((result) => (
                             <li key={result.id} onClick={() => this.handleItemClick(result)}>
-                                {result.valueVi} ({result.valueEn})
+                                {result.name}
                             </li>
                         ))}
                     </ul>

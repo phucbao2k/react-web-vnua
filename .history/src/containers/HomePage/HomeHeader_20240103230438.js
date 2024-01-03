@@ -145,7 +145,6 @@ class HomeHeader extends Component {
                         <div className="title1"><FormattedMessage id="banner.title1" /></div>
                         <div className="title2"><FormattedMessage id="banner.title2" /></div>
                     </div>
-                    <SearchDoctor />
                 </div>
                
             </React.Fragment>

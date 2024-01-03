@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './SearchDoctor.scss';
-const searchKeywords = ["Thạc sĩ", "Tiến sĩ", "Phó giáo sư", "Giáo sư", "Bachelor", "Doctor", "Associate Professor", "Professor"];
+
 class SearchDoctor extends Component {
     constructor(props) {
         super(props);
