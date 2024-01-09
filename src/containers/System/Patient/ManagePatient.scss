@@ -18,17 +18,17 @@ div._loading_overlay_wrapper {
         padding: 0 20px;
 
         .table-manage-patient {
+            overflow-x: auto; // Thêm thanh cuộn ngang khi bảng quá rộng
 
-            table,
-            th,
-            td {
-                border: 1px solid black;
-                border-radius: collapse;
+            table {
+                border-collapse: collapse;
+                width: 100%;
             }
 
             th,
             td {
-                padding: 5px;
+                border: 1px solid black;
+                padding: 8px;
                 text-align: left;
             }
 
@@ -38,61 +38,83 @@ div._loading_overlay_wrapper {
                 cursor: pointer;
             }
 
-            .mp-btn-confirm,
-            .mp-btn-remedy {
-                height: 30px;
-                border-radius: 3px;
-                margin-bottom: 10px; // Adjust spacing between buttons
-            }
-
             .mp-btn-confirm {
                 margin-right: 10px;
+                height: auto;
+                border-radius: 3px;
                 background: orange;
             }
 
             .mp-btn-remedy {
+                height: 30px;
+                border-radius: 3px;
                 background: #39dca0;
             }
         }
-    }
 
-    .preview-img-container {
-        .label-upload {
-            padding: 5px;
-            border-radius: 3px;
-            background: #ddd;
-            cursor: pointer;
+        .preview-img-container {
+            .label-upload {
+                padding: 5px;
+                border-radius: 3px;
+                background: #ddd;
+                cursor: pointer;
 
-            &:hover {
-                opacity: 0.9;
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
+
+            .preview-image {
+                height: 50px;
+                width: 100%;
+                border: 1px solid #ddd;
+                background: center center no-repeat;
+                background-size: contain;
+                cursor: pointer;
             }
         }
-
-        .preview-image {
-            height: 50px;
-            width: 100%;
-            border: 1px solid #ddd;
-            background: center center no-repeat;
-            background-size: contain;
-            cursor: pointer;
-        }
     }
 
-    @media screen and (max-width: 767px) {
+    @media only screen and (max-width: 500px) {
+        .table-manage-patient {
+            display: block;
 
-        // Adjust styles for screens smaller than 768px wide
-        .manage-patient-body {
-            padding: 0 10px; // Adjust padding for smaller screens
-        }
+            table,
+            thead,
+            tbody,
+            tr {
+                display: block;
+            }
 
-        .mp-btn-confirm,
-        .mp-btn-remedy {
-            margin-right: 0; // Remove right margin for smaller screens
-            margin-bottom: 5px; // Adjust spacing between buttons for smaller screens
-        }
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
 
-        .preview-image {
-            height: 30px; // Adjust height for smaller screens
+            tr {
+                border: 1px solid #ccc;
+            }
+
+            td {
+                /* Behave like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+            }
         }
     }
 }

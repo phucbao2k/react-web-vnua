@@ -50,36 +50,33 @@ class TableManageSpecialty extends Component {
 
 
                     <div className="users-table mt-3 mx-1">
-                        <div className="table-container">
-                            <table id="TableManageUser">
-                                <tbody>
-                                    <tr>
-                                        <th><FormattedMessage id="menu.admin.specialty-name" /></th>
-                                        <th><FormattedMessage id="menu.admin.detail" /></th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    {arrSpecialties && arrSpecialties.length > 0 && arrSpecialties.map((item, index) => {
-                                        // để duyệt 1 vòng lặp, ta có thể dùng function map(), bắt buộc phải return ra 1 thứ gì đó
-                                        // thì function map() mới hoạt động được
-                                        return (
-                                            <tr key={index}>
-                                                <td>{item.name}</td>
+                        <table id="TableManageUser">
+                            <tbody>
+                                <tr>
+                                    <th><FormattedMessage id="menu.admin.specialty-name" /></th>
+                                    <th><FormattedMessage id="menu.admin.detail" /></th>
+                                    <th>Actions</th>
+                                </tr>
+                                {arrSpecialties && arrSpecialties.length > 0 && arrSpecialties.map((item, index) => {
+                                    // để duyệt 1 vòng lặp, ta có thể dùng function map(), bắt buộc phải return ra 1 thứ gì đó
+                                    // thì function map() mới hoạt động được
+                                    return (
+                                        <tr key={index}>
+                                            <td>{item.name}</td>
+                                            
+                                            <td>{item.descriptionMarkdown}</td>
+                                            <td>
+                                                <button className="btn-edit"
+                                                    onClick={() => this.handleEditSpecialty(item)}><i className="fa-solid fa-pencil"></i></button>
+                                                <button className="btn-delete" onClick={() => this.handleDeleteSpecialty(item)}><i className="fa-solid fa-trash"></i></button>
+                                                {/* item là 1 object lưu trữ tất cả thông tin của người dùng */}
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
 
-                                                <td>{item.descriptionMarkdown}</td>
-                                                <td>
-                                                    <button className="btn-edit"
-                                                        onClick={() => this.handleEditSpecialty(item)}><i className="fa-solid fa-pencil"></i></button>
-                                                    <button className="btn-delete" onClick={() => this.handleDeleteSpecialty(item)}><i className="fa-solid fa-trash"></i></button>
-                                                    {/* item là 1 object lưu trữ tất cả thông tin của người dùng */}
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-
-                            </table>
-                        </div>
-
+                        </table>
                     </div>
                 </div>
 

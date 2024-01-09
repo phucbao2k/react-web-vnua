@@ -1,7 +1,7 @@
-.div._loading_overlay_wrapper {
+div._loading_overlay_wrapper {
     position: unset;
 
-    &._loading_overlay_overlay {
+    ._loading_overlay_overlay {
         z-index: 9122000;
     }
 }
@@ -12,22 +12,24 @@
         margin: 10px 0;
         text-align: center;
         text-transform: uppercase;
+        
     }
 
     .manage-patient-body {
         padding: 0 20px;
-        overflow-x: auto; // Thêm thanh cuộn ngang khi nội dung quá rộng
 
         .table-manage-patient {
-            table {
-                border-collapse: collapse;
-                width: 100%;
+
+            table,
+            th,
+            td {
+                border: 1px solid black;
+                border-radius: collapse;
             }
 
             th,
             td {
-                border: 1px solid black;
-                padding: 10px; // Tăng padding cho cell
+                padding: 5px;
                 text-align: left;
             }
 
@@ -37,23 +39,23 @@
                 cursor: pointer;
             }
 
-            .mp-btn-confirm,
-            .mp-btn-remedy {
+            .mp-btn-confirm {
                 margin-right: 10px;
-                margin-bottom: 10px;
                 height: auto;
                 border-radius: 3px;
                 background: orange;
             }
 
             .mp-btn-remedy {
+                height: 30px;
+                border-radius: 3px;
                 background: #39dca0;
             }
         }
 
         .preview-img-container {
             .label-upload {
-                padding: 10px; // Tăng padding cho label
+                padding: 5px;
                 border-radius: 3px;
                 background: #ddd;
                 cursor: pointer;
@@ -74,22 +76,44 @@
         }
     }
 
-    @media screen and (max-width: 767px) {
+    @media only screen and (max-width: 500px) {
+        .table-manage-patient {
+            display: block;
 
-        // Điều chỉnh kiểu dáng cho màn hình nhỏ hơn 768px
-        .manage-patient-body {
-            padding: 0 10px;
-        }
+            thead,
+            tbody,
+            tr {
+                display: block;
+            }
 
-        .mp-btn-confirm,
-        .mp-btn-remedy {
-            margin-right: 0;
-            margin-bottom: 10px;
-        }
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
 
-        .preview-img-container {
-            .preview-image {
-                height: 30px;
+            tr {
+                border: 1px solid #ccc;
+            }
+
+            td {
+                /* Behave like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
             }
         }
     }
